@@ -4,16 +4,6 @@ using System.Collections.Generic;
 
 public class WWWHelper : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
 	public delegate void HttpRequestDelegate(int id, WWW www);
 
 	public event HttpRequestDelegate OnHttpRequest;
@@ -24,7 +14,7 @@ public class WWWHelper : MonoBehaviour {
 
 	static GameObject container = null;
 
-	// 싱글
+	// Single-ton
 	public static WWWHelper Instance {
 		get {
 			if (current == null) {
@@ -40,26 +30,24 @@ public class WWWHelper : MonoBehaviour {
 	public void get(int id, string url) {
 		WWWForm form = getHeader ();
 //		WWW www = new WWW (url, form);
-		
+
 		var header = getHeaders (form.headers);
 		WWW www = new WWW (url, form.data, header);
-
 		
-//		WWW www = new WWW("http://www.naver.com");
 		StartCoroutine(WaitForRequest(id, www));
 	}
 
 
-//	public void post(int id, string url, Dictionary<string, string> data) {
-//		WWWForm form = new WWWForm();
-//
-//		foreach (KeyValuePair<string, string> post_arg in data) {
-//			form.AddField(post_arg.Key, post_arg.Value);
-//		}
-//
-	//		WWW www = new WWW(url, form);chrome://net-internals/
-//		StartCoroutine(WaitForRequest(id, www));
-//	}
+	public void post(int id, string url, Dictionary<string, string> data) {
+		WWWForm form = new WWWForm();
+
+		foreach (KeyValuePair<string, string> post_arg in data) {
+			form.AddField(post_arg.Key, post_arg.Value);
+		}
+
+			WWW www = new WWW(url, form);chrome://net-internals/
+		StartCoroutine(WaitForRequest(id, www));
+	}
 
 
 	private IEnumerator  WaitForRequest(int id, WWW www) {
@@ -119,7 +107,8 @@ public class WWWHelper : MonoBehaviour {
 //		form.AddField ("Accept", "application/json");
 //		form.AddField ("Accept-Encoding", "gzip");
 
-
 		return hedaer;
 	}
+
+
 }
