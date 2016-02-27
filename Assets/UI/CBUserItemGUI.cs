@@ -12,4 +12,9 @@ public class CBUserItemGUI : CBBaseUI {
 	void Update () {
 	
 	}
+
+	public void OnGUI()
+	{
+
+	}
 }

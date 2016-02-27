@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
+using AssemblyCSharp;
 
 public class WWWHelper : MonoBehaviour {
 
@@ -26,6 +28,11 @@ public class WWWHelper : MonoBehaviour {
 		}
 	}
 
+	public void get(string url){
+		WWW www = new WWW (url);
+		StartCoroutine (WaitForRequest (1, www));
+
+	}
 
 	public void get(int id, string url) {
 		WWWForm form = getHeader ();
@@ -37,16 +44,65 @@ public class WWWHelper : MonoBehaviour {
 		StartCoroutine(WaitForRequest(id, www));
 	}
 
+	public void get(int id, string url, WWWForm form, Dictionary<string, string> header)
+	{
+//		WWWForm form = getHeader();
+
+
+	}
+
+	public void POST(int id, string url, Dictionary<string, object> JsonData){
+		WWWForm form = new WWWForm ();
+
+		var data = getHeaders (form.headers);
+//		byte[] jsonDataByte = 
+		foreach (KeyValuePair<string, string> post_arg in data) {
+			form.AddField(post_arg.Key, post_arg.Value);
+		}
+
+		string jsonString = JsonParser.Write (JsonData);
+		byte[] jsonByte = Encoding.UTF8.GetBytes(jsonString.ToCharArray());
+
+		WWW www = new WWW(url, jsonByte, data);
+		StartCoroutine(WaitForRequest(id, www));
+
+	}
 
 	public void post(int id, string url, Dictionary<string, string> data) {
 		WWWForm form = new WWWForm();
+//		WWWForm form = getHeader();
+
+		data = getHeaders ();
 
 		foreach (KeyValuePair<string, string> post_arg in data) {
 			form.AddField(post_arg.Key, post_arg.Value);
 		}
 
-			WWW www = new WWW(url, form);chrome://net-internals/
+		WWW www = new WWW(url, form);
 		StartCoroutine(WaitForRequest(id, www));
+	}
+
+	public void post(int id, string url) {
+		WWWForm form = new WWWForm();
+//		WWWForm form = getUserInfoBody();
+
+//		var data = getHeaders ();
+		var data = getHeaders(form.headers);
+		byte[] jsondata = getUserInfoBody ();
+
+		foreach (KeyValuePair<string, string> post_arg in data) {
+			form.AddField(post_arg.Key, post_arg.Value);
+		}
+
+//		WWW www = new WWW(url, form);chrome://net-internals/
+//		WWW www = new WWW(url, form.data, data);
+		WWW www = new WWW(url, jsondata, data);
+		StartCoroutine(WaitForRequest(id, www));
+	}
+
+	public void POST(string url){
+		WWW www = new WWW (url);
+		StartCoroutine(WaitForRequest(1, www));
 	}
 
 
@@ -65,6 +121,27 @@ public class WWWHelper : MonoBehaviour {
 		www.Dispose();
 	}
 
+	private byte[] getUserInfoBody(){
+//		"memberID": "aaa",
+//		"memberPWD": "MemberPWD",
+//		"LastDeviceID": "LastDeviceID",
+//		"LastIPaddress": "LastIPaddress",
+//		"LastMACAddress": "LastMACAddress"
+		string json = "{ \"memberID\": \"aaa\",\"memberPWD\": \"MemberPWD\",\"LastDeviceID\": \"LastDeviceID\",\"LastIPaddress\": \"LastIPaddress\",\"LastMACAddress\": \"LastMACAddress\"}";
+//		byte [] jsonArr = Encoding.UTF8.GetBytes(json.ToCharArray());
+		byte [] jsonArr= Encoding.UTF8.GetBytes(json.ToCharArray());
+//		byte [] jsonArr = (byte ) json.ToCharArray();
+
+//		WWWForm form = new WWWForm();
+//		form.AddField ("memberID", "aaa");
+//		form.AddField ("memberPWD", "MemberPWD");
+//		form.AddField ("LastDeviceID", "LastDeviceID");
+//		form.AddField ("LastIPaddress", "LastIPaddress");
+//		form.AddField ("LastMACAddress", "LastMACAddress");
+
+		return jsonArr;
+	}
+
 	private WWWForm getHeader(){
 		WWWForm form = new WWWForm();
 		form.AddField( "ZUMO-API-VERSION", "2.0.0" );
@@ -75,6 +152,7 @@ public class WWWHelper : MonoBehaviour {
 		form.AddField ("User-Agent", "ZUMO/2.0 (lang=Managed; os=Windows Store; os_version=--; arch=X86; version=2.0.31217.0)");
 		form.AddField ("Accept", "application/json");
 		form.AddField ("Accept-Encoding", "gzip");
+		form.AddField ("x-zumo-auth", "ChangeHereForAuthentication");
 
 //		Hashtable headers = form.headers;
 		byte[] rawData = form.data;
@@ -94,20 +172,41 @@ public class WWWHelper : MonoBehaviour {
 		return form;
 	}
 
-	private Dictionary<string, string> getHeaders(Dictionary<string, string> hedaer){
-		
-		hedaer["ZUMO-API-VERSION"] = "2.0.0";
-		hedaer["X-ZUMO-VERSION"] = "ZUMO/2.0 (lang=Managed; os=Windows Store; os_version=--; arch=X86; version=2.0.31217.0)";
-		hedaer ["X-ZUMO-FEATURES"] = "AJ";
-		hedaer ["X-ZUMO-INSTALLATION-ID"] = "fe52b710-0312-4cad-8d53-dfd28d4c6f9b";
-		hedaer ["Content-Type"] = "application/json";
-		hedaer["User-Agent"] = "ZUMO/2.0 (lang=Managed; os=Windows Store; os_version=--; arch=X86; version=2.0.31217.0)";
-		hedaer ["X-ZUMO-AUTH"] = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaWQ6YzZhZTNhOTQ3NTdiMDM3N2Y5OTgyZmQwODJhZWVhMmMiLCJpZHAiOiJmYWNlYm9vayIsInZlciI6IjMiLCJpc3MiOiJodHRwczovL2R3LWNsb3VkYnJlYWQteXMuYXp1cmV3ZWJzaXRlcy5uZXQvIiwiYXVkIjoiaHR0cHM6Ly9kdy1jbG91ZGJyZWFkLXlzLmF6dXJld2Vic2l0ZXMubmV0LyIsImV4cCI6MTQ1NjEyODc5MiwibmJmIjoxNDU2MTI1MTkyfQ.CTMp5Myw287z76WhxolzAmPebLUqeFTcSXFdw-VoRXU";
+	private Dictionary<string, string> getHeaders(Dictionary<string, string> header){
+		header ["Accept-Encoding"] = "gzip";
+		header ["Accept"] = "application/json";
+
+		header["ZUMO-API-VERSION"] = "2.0.0";
+		header["X-ZUMO-VERSION"] = "ZUMO/2.0 (lang=Managed; os=Windows Store; os_version=--; arch=X86; version=2.0.31217.0)";
+		header ["X-ZUMO-FEATURES"] = "AJ";
+		header ["X-ZUMO-INSTALLATION-ID"] = "fe52b710-0312-4cad-8d53-dfd28d4c6f9b";
+		header ["Content-Type"] = "application/json";
+		header["User-Agent"] = "ZUMO/2.0 (lang=Managed; os=Windows Store; os_version=--; arch=X86; version=2.0.31217.0)";
+		header ["x-zumo-auth"] = "ChangeHereForAuthentication";
 
 //		form.AddField ("Accept", "application/json");
 //		form.AddField ("Accept-Encoding", "gzip");
 
-		return hedaer;
+		return header;
+	}
+
+	private Dictionary<string, string> getHeaders(){
+		var header = new Dictionary<string, string> ();
+		header ["Accept-Encoding"] = "gzip";
+		header ["Accept"] = "application/json";
+		
+		header["ZUMO-API-VERSION"] = "2.0.0";
+		header["X-ZUMO-VERSION"] = "ZUMO/2.0 (lang=Managed; os=Windows Store; os_version=--; arch=X86; version=2.0.31217.0)";
+		header ["X-ZUMO-FEATURES"] = "AJ";
+		header ["X-ZUMO-INSTALLATION-ID"] = "fe52b710-0312-4cad-8d53-dfd28d4c6f9b";
+		header ["Content-Type"] = "application/json";
+		header["User-Agent"] = "ZUMO/2.0 (lang=Managed; os=Windows Store; os_version=--; arch=X86; version=2.0.31217.0)";
+		header ["x-zumo-auth"] = "ChangeHereForAuthentication";
+
+		//		form.AddField ("Accept", "application/json");
+		//		form.AddField ("Accept-Encoding", "gzip");
+
+		return header;
 	}
 
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -12,11 +13,21 @@ namespace AssemblyCSharp
 		// X-ZUMO-AUTH
 		private string _auth_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaWQ6YzZhZTNhOTQ3NTdiMDM3N2Y5OTgyZmQwODJhZWVhMmMiLCJpZHAiOiJmYWNlYm9vayIsInZlciI6IjMiLCJpc3MiOiJodHRwczovL2R3LWNsb3VkYnJlYWQteXMuYXp1cmV3ZWJzaXRlcy5uZXQvIiwiYXVkIjoiaHR0cHM6Ly9kdy1jbG91ZGJyZWFkLXlzLmF6dXJld2Vic2l0ZXMubmV0LyIsImV4cCI6MTQ1NjEyODc5MiwibmJmIjoxNDU2MTI1MTkyfQ.CTMp5Myw287z76WhxolzAmPebLUqeFTcSXFdw-VoRXU";
 
+		private string _azureEndPoint;
 
-		public AzureMobileAppRequestHelper ()
+		public AzureMobileAppRequestHelper (string azureEndPoint, string token/*, MobileServiceUser User*/)
 		{
 			
 		}
+
+//		public string setServerAdd(string address){
+//			char lastChar = address [address.Length];
+//			if (lastChar.CompareTo ("/") == 0) {
+//				return address.Substring (0, address.Length - 1);
+//			};
+//
+//			return address;
+//		}
 
 		public Dictionary<string, string> getDefaultHeader(){
 			var header = new Dictionary<string, string> (); 
