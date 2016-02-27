@@ -19,55 +19,74 @@ public class CBUserInfoUI : CBBaseUI {
 
 	// Use this for initialization
 	void Start () {
-		ServerEndPoint = ServerAddress + "api/CBSelLoginInfo";
-//		ServerEndPoint = "http://dw-cloudbread2.azurewebsites.net/api/CBSelLoginInfo";
-
-		WWWHelper helper = WWWHelper.Instance;
-		helper.OnHttpRequest += OnHttpRequest;
-		helper.POST (2, ServerEndPoint, CreateJsonData ());
+		cloudbread = new CloudBreadAzure (ServerAddress);
+		cloudbread.CBSelLoginInfo (CallBack);
 	}
 
+	private CloudBreadAzure cloudbread;
 
-	
-	// Update is called once per frame
-	void Update () {
-	
+	public void CallBack(string jsonString, Dictionary<string, object>[] jsonRequestData){
+		print ("call back methods");
+		ResultDicData = jsonRequestData;
+		RequestResultJson = jsonString;
+//		print ("call back methods");
 	}
 
+	private string [] _headerString = {
+		"memberID",
+		"memberPWD",
+		"emailAddress",
+		"emailConfirmedYN",
+		"phoneNumber1",
+		"name1"
+	};
 
-//	private Dictionary<string, object>[] LoginInfoData;
-
-	private string [] _headerString = {"memberID", "memberPWD", "emailAddress", "emailConfirmedYN", "phoneNumber1","name1"};
-
-	public Dictionary<string, object> CreateJsonData(){
-		//		"memberID": "aaa",
-		//		"memberPWD": "MemberPWD",
-		//		"LastDeviceID": "LastDeviceID",
-		//		"LastIPaddress": "LastIPaddress",
-		//		"LastMACAddress": "LastMACAddress"
-		var JsonDic = new Dictionary<string, object> ();
-		JsonDic.Add ("memberID", "aaa");
-		JsonDic.Add ("memberPWD", "MemberPWD");
-		JsonDic.Add ("LastDeviceID", "LastDeviceID");
-		JsonDic.Add ("LastIPaddress", "LastIPaddress");
-		JsonDic.Add ("LastMACAddress", "LastMACAddress");
-
-		return JsonDic;
-	}
+//	public void OnGUI()
+//	{
+//		GUILayout.BeginArea(MainAreaRect);
+//			GUILayout.BeginVertical();
+//				drawTitleRow(titleData:_headerString);
+//				if( ResultDicData!= null)
+//					drawTablewithButton (ResultDicData.Length, _headerString.Length, _headerString, ResultDicData);
+//
+//					RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Height (300));
+//			GUILayout.EndVertical();
+//		GUILayout.EndArea ();
+//
+//	}
 
 	public void OnGUI()
 	{
 		GUILayout.BeginArea(MainAreaRect);
 			GUILayout.BeginVertical();
-//				drawTable (1, _headerString.Length, _headerString);
-				drawTitleRow(titleData:_headerString);
-				if( ResultDicData!= null)
-					drawTable (ResultDicData.Length, _headerString.Length, _headerString, ResultDicData);
+				GUILayout.BeginHorizontal ();
+					GUILayout.Label (ServerEndPoint);
+					GUILayout.Button ("확인");
+				GUILayout.EndHorizontal ();
+				drawTitleRow (_headerString);
+				if (ResultDicData != null) {
+//					List<string> headers = new List<string>( ResultDicData[0].Keys);
+//					drawTitleRow(titleData:headers);
+					drawTablewithButton (ResultDicData.Length, _headerString.Length, _headerString, ResultDicData, "memberID");
+				}
 
-					RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Height (300));
+				RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Height (300));
 			GUILayout.EndVertical();
 		GUILayout.EndArea ();
 
+	}
+
+
+	public override void ModifyButtonClicked(int row, Dictionary<string, object> rawDicData){
+		print ("" + row + " 번째 User Clicked");
+
+		cloudbread.CBCOMUdtMember (rawDicData, CallBack);
+	}
+
+	public void CallBack2(string jsonString, Dictionary<string, object>[] jsonRequestData){
+		print ("call back methods");
+//		ResultDicData = jsonRequestData;
+		//		print ("call back methods");
 	}
 
 

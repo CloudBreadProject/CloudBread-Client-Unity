@@ -14,11 +14,12 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class CBMemberGameInfo : CBBaseUI {
+public class CBMemberGameInfoGUI : CBBaseUI {
 
 	// Use this for initialization
 	void Start () {
 		ServerEndPoint = ServerAddress + "api/CBSelMemberGameInfoStages";
+//		ServerEndPoint = ServerAddress + "api/CBSelMemberGameInfo";
 		//		ServerEndPoint = "http://dw-cloudbread2.azurewebsites.net/api/CBSelLoginInfo";
 
 		WWWHelper helper = WWWHelper.Instance;
@@ -51,7 +52,7 @@ public class CBMemberGameInfo : CBBaseUI {
 				//				drawTable (1, _headerString.Length, _headerString);
 				drawTitleRow(titleData:_headerString);
 				if( ResultDicData!= null)
-					drawTable (ResultDicData.Length, _headerString.Length, _headerString, ResultDicData);
+					drawTablewithButton (ResultDicData.Length, _headerString.Length, _headerString, ResultDicData, "memberID");
 
 				RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Height (300));
 			GUILayout.EndVertical();
@@ -71,5 +72,16 @@ public class CBMemberGameInfo : CBBaseUI {
 //			"name1"
 //		};
 //		drawTable (2, 5, datas);
+	}
+
+	public override void ModifyButtonClicked(int row, Dictionary<string, object> rawDicData){
+		print ("" + row + " 번째 User Clicked");
+//		rawDicData.Add ("TimeZoneID", "Korea Standard Time");
+
+		ServerEndPoint = ServerAddress + "api/CBCOMUdtMember";
+
+		WWWHelper helper = WWWHelper.Instance;
+		helper.OnHttpRequest += OnHttpRequest;
+		helper.POST (2, ServerEndPoint, rawDicData );
 	}
 }
