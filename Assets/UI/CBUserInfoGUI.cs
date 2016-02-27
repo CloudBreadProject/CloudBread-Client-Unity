@@ -34,8 +34,8 @@ public class CBUserInfoUI : CBBaseUI {
 	
 	}
 
-	private string jsonareastring = "";
-	private Dictionary<string, object>[] LoginInfoData;
+
+//	private Dictionary<string, object>[] LoginInfoData;
 
 	private string [] _headerString = {"memberID", "memberPWD", "emailAddress", "emailConfirmedYN", "phoneNumber1","name1"};
 
@@ -61,28 +61,16 @@ public class CBUserInfoUI : CBBaseUI {
 			GUILayout.BeginVertical();
 //				drawTable (1, _headerString.Length, _headerString);
 				drawTitleRow(titleData:_headerString);
-				if(LoginInfoData != null)
-					drawTable (LoginInfoData.Length, _headerString.Length, _headerString, LoginInfoData);
+				if( ResultDicData!= null)
+					drawTable (ResultDicData.Length, _headerString.Length, _headerString, ResultDicData);
 
-				jsonareastring = GUILayout.TextArea (jsonareastring, GUILayout.Height (300));
+					RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Height (300));
 			GUILayout.EndVertical();
 		GUILayout.EndArea ();
 
 	}
 
-	void OnHttpRequest(int id, WWW www) {
-		WWWHelper helper = WWWHelper.Instance;
-		helper.OnHttpRequest -= OnHttpRequest;
 
-		if (www.error != null) {
-			Debug.Log ("[Error] " + www.error);
-		} else {
-			Debug.Log (www.text);
-			jsonareastring = www.text;
-			LoginInfoData = (Dictionary<string, object>[]) JsonParser.Read2Object(jsonareastring);
-
-		}
-	}
 
 }
 

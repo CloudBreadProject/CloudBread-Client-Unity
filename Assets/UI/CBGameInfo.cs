@@ -12,32 +12,64 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CBGameInfo : CBBaseUI {
 
 	// Use this for initialization
 	void Start () {
-	
+		ServerEndPoint = ServerAddress + "api/CBSelMemberGameInfoStages";
+		//		ServerEndPoint = "http://dw-cloudbread2.azurewebsites.net/api/CBSelLoginInfo";
+
+		WWWHelper helper = WWWHelper.Instance;
+		helper.OnHttpRequest += OnHttpRequest;
+		helper.POST (2, ServerEndPoint, CreateJsonData ());
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
+
+	private string[] _headerString = {"memberGameInfoStageID", "memberID", "stageName", "stageStatus", "category1", "stageStat1"};
+
+	public Dictionary<string, object> CreateJsonData(){
+		//		"memberID": "aaa",
+		//		"memberPWD": "MemberPWD",
+		//		"LastDeviceID": "LastDeviceID",
+		//		"LastIPaddress": "LastIPaddress",
+		//		"LastMACAddress": "LastMACAddress"
+		var JsonDic = new Dictionary<string, object> ();
+		JsonDic.Add ("memberID", "aaa");
+
+		return JsonDic;
+	}
+
 	public void OnGUI(){
+		GUILayout.BeginArea(MainAreaRect);
+			GUILayout.BeginVertical();
+				//				drawTable (1, _headerString.Length, _headerString);
+				drawTitleRow(titleData:_headerString);
+				if( ResultDicData!= null)
+					drawTable (ResultDicData.Length, _headerString.Length, _headerString, ResultDicData);
+
+				RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Height (300));
+			GUILayout.EndVertical();
+		GUILayout.EndArea ();
+	
 		
-		string[] datas = {
-			"memberid",
-			"phonenumber1",
-			"phonenumber2",
-			"plnumber",
-			"name1",
-			"memberid",
-			"phonenumber1",
-			"phonenumber2",
-			"plnumber",
-			"name1"
-		};
-		drawTable (2, 5, datas);
+//		string[] datas = {
+//			"memberid",
+//			"phonenumber1",
+//			"phonenumber2",
+//			"plnumber",
+//			"name1",
+//			"memberid",
+//			"phonenumber1",
+//			"phonenumber2",
+//			"plnumber",
+//			"name1"
+//		};
+//		drawTable (2, 5, datas);
 	}
 }

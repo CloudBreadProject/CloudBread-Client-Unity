@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using AssemblyCSharp;
 
 public class CBBaseUI : MonoBehaviour {
 
@@ -24,7 +25,22 @@ public class CBBaseUI : MonoBehaviour {
 	public Rect MainAreaRect = new Rect (0, 100, Screen.width - 120, 500);
 
 
-	public string resultJson;
+	public string RequestResultJson;
+	public Dictionary<string, object>[] ResultDicData;
+
+	public void OnHttpRequest(int id, WWW www) {
+		WWWHelper helper = WWWHelper.Instance;
+		helper.OnHttpRequest -= OnHttpRequest;
+
+		if (www.error != null) {
+			Debug.Log ("[Error] " + www.error);
+		} else {
+			Debug.Log (www.text);
+			RequestResultJson = www.text;
+			ResultDicData = (Dictionary<string, object>[]) JsonParser.Read2Object(RequestResultJson);
+
+		}
+	}
 
 	protected void drawTable(int row, int col, string[] data){
 		GUILayout.BeginVertical ("box");
