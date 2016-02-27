@@ -15,7 +15,7 @@ namespace AssemblyCSharp
 
 		private Action<string, Dictionary<string, object>[]> _requestCallback = null;
 
-		// api/CBSelLoginInfo
+		// POST api/CBSelLoginInfo
 		public void CBSelLoginInfo(Action<string, Dictionary<string,object>[]> callback){
 			string ServerEndPoint = ServerAddress + "api/CBSelLoginInfo";
 
@@ -40,7 +40,7 @@ namespace AssemblyCSharp
 
 		}
 
-		// api/CBSelLoginInfo request
+		// POST api/CBSelLoginInfo request
 		public void OnHttpRequest(int id, WWW www) {
 			WWWHelper helper = WWWHelper.Instance;
 			helper.OnHttpRequest -= OnHttpRequest;
@@ -56,7 +56,7 @@ namespace AssemblyCSharp
 			}
 		}
 
-		// api/CBCOMUdtMember
+		// POST api/CBCOMUdtMember
 		public void CBCOMUdtMember(Dictionary<string, object> updateItem, Action<string, Dictionary<string, object>[]> callback){
 			string ServerEndPoint = ServerAddress + "api/CBCOMUdtMember";
 
@@ -70,9 +70,102 @@ namespace AssemblyCSharp
 			_requestCallback = callback;
 		}
 
-		// api/CBCOMUdtMember request
+		// POST api/CBCOMUdtMember request
 //		public void 
 
+		/*
+		 * 
+		 * 
+		 * MemberGameInfo
+		 */
+		public void SelMemberGameInfo(){
+
+		}
+
+
+
+		// POST api/SelItemListAll
+		public void SelItemListAll(){
+
+		}
+
+		/*
+		 * 개별 아이템 목록 조회
+		 */
+		// POST api/CBComSelItemList1
+		public void CBComSelItemList1(){
+			
+		}
+
+		/*
+		 * 개별 아이템 목록 수정
+		 */
+		// POST api/CBComUdtItemList1
+		public void CBComUdtItemList1(){
+
+		}
+
+		// POST api/AddUseMemberItem
+		public void AddUseMemberItem(){
+
+		}
+
+		// POST api/AddMemberItemPurchase 
+		public void AddMemberItemPurchase (){
+		}
+
+		// POST api/SelMemberItems
+		public void SelMemberItems(){
+		}
+
+		// POST api/CBComSelMemberItem
+		public void CBComSelMemberItem(){
+		}
+
+		// POST api/AddUseMemberItem 
+		public void CBAddUseMemberItem(){
+		}
+
+		// POST api/CBComUdtMemberItem 
+		public void CBComUdtMemberItem (){
+		}
+
+		// POST api/SelMemberGameInfoStages
+		public void SelMemberGameInfoStages(){
+		}
+
+		// POST api/CBCOMSelMemberGameInfoStages
+		public void CBCOMSelMemberGameInfoStages(){
+		}
+
+		// POST api/CBComUdtMemberGameInfoStages 
+		public void CBComUdtMemberGameInfoStages (){
+		}
+
+		// POST api/UdtMemberGameInfoStage 
+		public void UdtMemberGameInfoStage (){
+		}
+
+		// POST api/CBSelNotices 
+		public void CBSelNotices (){
+			
+		}
+
+		// POST api/SelGameEvents 
+		public void SelGameEvents (){
+		}
+
+		// POST api/UdtGameEventMemberToItem 
+		public void UdtGameEventMemberToItem (){
+		}
+
+		// POST api/SelCoupons 
+		public void SelCoupons (){
+		}
+
+		// POST api/UdtCouponMember 
+		public void UdtCouponMember (){
+		}
 
 	}
 }
