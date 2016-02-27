@@ -8,7 +8,7 @@ public class CloudBreadTestUI : MonoBehaviour {
 	private string FacebookAccessToken = "xxx";
 	public string AuthKey = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaWQ6YzZhZTNhOTQ3NTdiMDM3N2Y5OTgyZmQwODJhZWVhMmMiLCJpZHAiOiJmYWNlYm9vayIsInZlciI6IjMiLCJpc3MiOiJodHRwczovL2R3LWNsb3VkYnJlYWQteXMuYXp1cmV3ZWJzaXRlcy5uZXQvIiwiYXVkIjoiaHR0cHM6Ly9kdy1jbG91ZGJyZWFkLXlzLmF6dXJld2Vic2l0ZXMubmV0LyIsImV4cCI6MTQ1NjE1MDkxNywibmJmIjoxNDU2MTQ3MzE3fQ.YqE2gLZVAX-Q_97DydrFKRKWPSsxxncIWIqNs0xrIiE";
 
-	private enum TESTPAGE {main, login, authentication, userInfo, gameInfo, itemList, userItem, gameStage, notice, events, coupons};
+	private enum TESTPAGE {main, login, authentication, userInfo, memberGameInfo, itemList, userItem, gameStage, notice, events, coupons};
 	private TESTPAGE currentPage = TESTPAGE.main;
 
 	private string jsonAreaString = "Json Area";
@@ -42,9 +42,9 @@ public class CloudBreadTestUI : MonoBehaviour {
 	}
 
 	public void test(){
-//		AzureMobileAppRequestHelper helper = new AzureMobileAppRequestHelper ();
-//		print(helper.setServerAdd ("https://dw-cloudbread2.azurewebsites.net/"));
+
 	}
+
 	public void OnGUI()
 	{
 		
@@ -80,8 +80,8 @@ public class CloudBreadTestUI : MonoBehaviour {
 			}
 			if (GUILayout.Button ("게임 정보", GUILayout.Height(50))) {
 				print ("GameInfo Page");
-				PresentationView (TESTPAGE.gameInfo);
-				currentPage = TESTPAGE.gameInfo;
+				PresentationView (TESTPAGE.memberGameInfo);
+				currentPage = TESTPAGE.memberGameInfo;
 				jsonAreaString = jsonAreaInitString;
 			}
 			if (GUILayout.Button ("아이템 목록", GUILayout.Height(50))) {
@@ -196,8 +196,8 @@ public class CloudBreadTestUI : MonoBehaviour {
 			ui = MainContainer.AddComponent(typeof(CBUserInfoUI)) as CBBaseUI;
 			ui.enabled = true;
 			break;
-		case TESTPAGE.gameInfo:
-			ui = MainContainer.AddComponent(typeof(CBGameInfo)) as CBBaseUI;
+		case TESTPAGE.memberGameInfo:
+			ui = MainContainer.AddComponent(typeof(CBMemberGameInfoGUI)) as CBBaseUI;
 			ui.enabled = true;
 			break;
 		case TESTPAGE.itemList:
