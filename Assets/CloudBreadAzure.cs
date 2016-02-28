@@ -15,6 +15,13 @@ namespace AssemblyCSharp
 
 		private Action<string, Dictionary<string, object>[]> _requestCallback = null;
 
+		public void AzureLogin(Action<string, Dictionary<string, object>[]> callback){
+			string ServerEndPoint = ServerAddress + "login/";
+
+			WWWHelper helper = WWWHelper.Instance;
+
+		}
+
 		// POST api/CBSelLoginInfo
 		public void CBSelLoginInfo(Action<string, Dictionary<string,object>[]> callback){
 			string ServerEndPoint = ServerAddress + "api/CBSelLoginInfo";
