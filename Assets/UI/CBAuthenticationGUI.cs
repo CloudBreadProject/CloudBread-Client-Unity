@@ -15,8 +15,10 @@ public class CBAuthenticationGUI : CBBaseUI {
 
 	public void OnGUI(){
 		GUILayout.BeginArea(MainAreaRect);
+		GUILayout.FlexibleSpace();
 			GUILayout.BeginVertical ();
 				GUILayout.BeginHorizontal ("box");
+
 				GUILayout.Label ("이 름 : ", GUILayout.Width(150));
 				GUILayout.TextField ("이름을 입력해 주세요.");
 				GUILayout.EndHorizontal ();
@@ -31,7 +33,9 @@ public class CBAuthenticationGUI : CBBaseUI {
 				if (GUILayout.Button ("확 인", GUILayout.Height(50))) {
 
 				}
+
 			GUILayout.EndVertical ();
+		GUILayout.FlexibleSpace ();
 		GUILayout.EndArea ();
 	}
 }

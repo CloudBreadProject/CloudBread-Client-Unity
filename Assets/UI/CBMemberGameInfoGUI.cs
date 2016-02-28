@@ -13,18 +13,14 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using AssemblyCSharp;
 
 public class CBMemberGameInfoGUI : CBBaseUI {
 
 	// Use this for initialization
 	void Start () {
-		ServerEndPoint = ServerAddress + "api/CBSelMemberGameInfoStages";
-//		ServerEndPoint = ServerAddress + "api/CBSelMemberGameInfo";
-		//		ServerEndPoint = "http://dw-cloudbread2.azurewebsites.net/api/CBSelLoginInfo";
-
-		WWWHelper helper = WWWHelper.Instance;
-		helper.OnHttpRequest += OnHttpRequest;
-		helper.POST (2, ServerEndPoint, CreateJsonData ());
+		cloudbread = new CloudBreadAzure (ServerAddress);
+		cloudbread.CBComSelMemberGameInfoes (CallBack);
 	}
 	
 	// Update is called once per frame
@@ -32,56 +28,54 @@ public class CBMemberGameInfoGUI : CBBaseUI {
 	
 	}
 
-	private string[] _headerString = {"memberGameInfoStageID", "memberID", "stageName", "stageStatus", "category1", "stageStat1"};
+	private CloudBreadAzure cloudbread;
 
-	public Dictionary<string, object> CreateJsonData(){
-		//		"memberID": "aaa",
-		//		"memberPWD": "MemberPWD",
-		//		"LastDeviceID": "LastDeviceID",
-		//		"LastIPaddress": "LastIPaddress",
-		//		"LastMACAddress": "LastMACAddress"
-		var JsonDic = new Dictionary<string, object> ();
-		JsonDic.Add ("memberID", "aaa");
+	private string[] _headerString = {
+		"memberID",
+		"level",
+		"exps",
+		"points",
+		"userSTAT1"
+	};
 
-		return JsonDic;
-	}
+//	public void OnGUI(){
+//		GUILayout.BeginArea(MainAreaRect);
+//			GUILayout.BeginVertical();
+//				//				drawTable (1, _headerString.Length, _headerString);
+//				drawTitleRow(titleData:_headerString);
+//				if( ResultDicData!= null)
+//					drawTablewithButton (ResultDicData.Length, _headerString.Length, _headerString, ResultDicData, "memberID");
+//
+//				RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Height (300));
+//			GUILayout.EndVertical();
+//		GUILayout.EndArea ();
+//	
+//	}
 
-	public void OnGUI(){
+	public void OnGUI()
+	{
 		GUILayout.BeginArea(MainAreaRect);
-			GUILayout.BeginVertical();
-				//				drawTable (1, _headerString.Length, _headerString);
-				drawTitleRow(titleData:_headerString);
-				if( ResultDicData!= null)
-					drawTablewithButton (ResultDicData.Length, _headerString.Length, _headerString, ResultDicData, "memberID");
+		GUILayout.BeginVertical();
+		GUILayout.BeginHorizontal ();
+		GUILayout.Label (ServerEndPoint);
+		GUILayout.Button ("확인");
+		GUILayout.EndHorizontal ();
+		drawTitleRow (_headerString);
+		if (ResultDicData != null) {
+//								List<string> headers = new List<string>( ResultDicData[0].Keys);
+//								drawTitleRow(titleData:headers);
+			drawTablewithButton (ResultDicData.Length, _headerString.Length, _headerString, ResultDicData, "memberID");
+		}
 
-				RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Height (300));
-			GUILayout.EndVertical();
+		RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Height (300));
+		GUILayout.EndVertical();
 		GUILayout.EndArea ();
-	
-		
-//		string[] datas = {
-//			"memberid",
-//			"phonenumber1",
-//			"phonenumber2",
-//			"plnumber",
-//			"name1",
-//			"memberid",
-//			"phonenumber1",
-//			"phonenumber2",
-//			"plnumber",
-//			"name1"
-//		};
-//		drawTable (2, 5, datas);
+
 	}
 
 	public override void ModifyButtonClicked(int row, Dictionary<string, object> rawDicData){
 		print ("" + row + " 번째 User Clicked");
-//		rawDicData.Add ("TimeZoneID", "Korea Standard Time");
 
-		ServerEndPoint = ServerAddress + "api/CBCOMUdtMember";
-
-		WWWHelper helper = WWWHelper.Instance;
-		helper.OnHttpRequest += OnHttpRequest;
-		helper.POST (2, ServerEndPoint, rawDicData );
+		cloudbread.CBComUdtMemberGameInfoes (rawDicData, CallBack);
 	}
 }

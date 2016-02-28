@@ -25,12 +25,12 @@ public class CBUserInfoUI : CBBaseUI {
 
 	private CloudBreadAzure cloudbread;
 
-	public void CallBack(string jsonString, Dictionary<string, object>[] jsonRequestData){
-		print ("call back methods");
-		ResultDicData = jsonRequestData;
-		RequestResultJson = jsonString;
+//	public void CallBack(string jsonString, Dictionary<string, object>[] jsonRequestData){
 //		print ("call back methods");
-	}
+//		ResultDicData = jsonRequestData;
+//		RequestResultJson = jsonString;
+////		print ("call back methods");
+//	}
 
 	private string [] _headerString = {
 		"memberID",

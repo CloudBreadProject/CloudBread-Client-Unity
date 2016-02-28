@@ -37,6 +37,11 @@ public class AzureAuthentication : MonoBehaviour {
 //		}
 //	}
 
+	public string CreateToken(string actual_user_id, string accessToken){
+		string json = "{ \"facebook\":{ \"userId\":\"Facebook:"+actual_user_id + "\", \"accessToken\":\"" + accessToken + "\" } }";
+		return json;
+	}
+
 	public class AuthenticationToken
 	{
 	}

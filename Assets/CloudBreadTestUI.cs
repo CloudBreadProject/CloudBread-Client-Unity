@@ -19,12 +19,15 @@ public class CloudBreadTestUI : MonoBehaviour {
 	private GameObject MainContainer;
 	private CBBaseUI _mainView;
 
+	private AzureMobileAppRequestHelper requestHelper;
+
 	// Use this for initialization
 	void Start () {
 		_azure = new AzureMobileApp (ServerAddress, AuthKey);
 		MainContainer = new GameObject ();
 		MainContainer.name = "MainView";
-		
+
+		requestHelper = new AzureMobileAppRequestHelper ();
 	}
 
 	private void AuthenticationGUI(){
@@ -133,7 +136,10 @@ public class CloudBreadTestUI : MonoBehaviour {
 					if (GUILayout.Button ("Ping 확인", GUILayout.Width(100))) {
 						WWWHelper helper = WWWHelper.Instance;
 						helper.OnHttpRequest += OnHttpRequest;
-						helper.get (100, ServerAddress);
+						helper.get (10, "http://dw-cloudbread2.azurewebsites.net/api/CBSocketAuth");
+
+
+
 					}
 				GUILayout.EndHorizontal ();
 				GUILayout.BeginHorizontal ();
@@ -154,7 +160,7 @@ public class CloudBreadTestUI : MonoBehaviour {
 			/////////////////////////
 //		jsonAreaString = GUILayout.TextArea (jsonAreaString, GUILayout.Height (300));
 		
-		
+
 //			GUILayout.BeginVertical ("box");
 //			GUILayout.TextArea ("aaaa", 250);
 //
@@ -166,11 +172,16 @@ public class CloudBreadTestUI : MonoBehaviour {
 	}
 
 	void OnHttpRequest(int id, WWW www) {
+		WWWHelper helper = WWWHelper.Instance;
+		helper.OnHttpRequest -= OnHttpRequest;
+
 		if (www.error != null) {
 			Debug.Log ("[Error] " + www.error);
 		} else {
 			Debug.Log (www.text);
+			print (www.text);
 			jsonAreaString = www.text;
+			requestHelper.setTokenJson (www.text);
 		}
 	}
 

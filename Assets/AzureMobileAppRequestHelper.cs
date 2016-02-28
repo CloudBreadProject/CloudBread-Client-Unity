@@ -1,4 +1,5 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,9 +16,16 @@ namespace AssemblyCSharp
 
 		private string _azureEndPoint;
 
+		private CBAuthentication cbAuth;
+
+		public AzureMobileAppRequestHelper ()
+		{
+			cbAuth = new CBAuthentication ();
+		}
+
 		public AzureMobileAppRequestHelper (string azureEndPoint, string token/*, MobileServiceUser User*/)
 		{
-			
+			cbAuth = new CBAuthentication ();
 		}
 
 //		public string setServerAdd(string address){
@@ -29,6 +37,18 @@ namespace AssemblyCSharp
 //			return address;
 //		}
 
+		public void setTokenJson(string result){
+			Debug.Log ("[AzureMobileAppRequest] " + result);
+			var resultDic = (Dictionary<string, object>) JsonParser.Read2Object(result);
+			cbAuth.token = (string) resultDic ["token"];
+			Debug.Log ("[token] " + cbAuth.token);
+			var crypt = CBAuthentication.AES_decrypt (cbAuth.token, "1234567890123456", "1234567890123456");
+
+			Debug.Log ("[token decrypt] " + crypt);
+
+
+
+		}
 		public Dictionary<string, string> getDefaultHeader(){
 			var header = new Dictionary<string, string> (); 
 			header["ZUMO-API-VERSION"] = _api_version;

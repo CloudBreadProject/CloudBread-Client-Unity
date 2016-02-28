@@ -39,7 +39,7 @@ public class WWWHelper : MonoBehaviour {
 //		WWW www = new WWW (url, form);
 
 		var header = getHeaders (form.headers);
-		WWW www = new WWW (url, form.data, header);
+		WWW www = new WWW (url, null, header);
 		
 		StartCoroutine(WaitForRequest(id, www));
 	}
@@ -68,37 +68,37 @@ public class WWWHelper : MonoBehaviour {
 
 	}
 
-	public void post(int id, string url, Dictionary<string, string> data) {
-		WWWForm form = new WWWForm();
-//		WWWForm form = getHeader();
-
-		data = getHeaders ();
-
-		foreach (KeyValuePair<string, string> post_arg in data) {
-			form.AddField(post_arg.Key, post_arg.Value);
-		}
-
-		WWW www = new WWW(url, form);
-		StartCoroutine(WaitForRequest(id, www));
-	}
-
-	public void post(int id, string url) {
-		WWWForm form = new WWWForm();
-//		WWWForm form = getUserInfoBody();
-
-//		var data = getHeaders ();
-		var data = getHeaders(form.headers);
-		byte[] jsondata = getUserInfoBody ();
-
-		foreach (KeyValuePair<string, string> post_arg in data) {
-			form.AddField(post_arg.Key, post_arg.Value);
-		}
-
-//		WWW www = new WWW(url, form);chrome://net-internals/
-//		WWW www = new WWW(url, form.data, data);
-		WWW www = new WWW(url, jsondata, data);
-		StartCoroutine(WaitForRequest(id, www));
-	}
+//	public void post(int id, string url, Dictionary<string, string> data) {
+//		WWWForm form = new WWWForm();
+////		WWWForm form = getHeader();
+//
+//		data = getHeaders ();
+//
+//		foreach (KeyValuePair<string, string> post_arg in data) {
+//			form.AddField(post_arg.Key, post_arg.Value);
+//		}
+//
+//		WWW www = new WWW(url, form);
+//		StartCoroutine(WaitForRequest(id, www));
+//	}
+//
+//	public void post(int id, string url) {
+//		WWWForm form = new WWWForm();
+////		WWWForm form = getUserInfoBody();
+//
+////		var data = getHeaders ();
+//		var data = getHeaders(form.headers);
+//		byte[] jsondata = getUserInfoBody ();
+//
+//		foreach (KeyValuePair<string, string> post_arg in data) {
+//			form.AddField(post_arg.Key, post_arg.Value);
+//		}
+//
+////		WWW www = new WWW(url, form);chrome://net-internals/
+////		WWW www = new WWW(url, form.data, data);
+//		WWW www = new WWW(url, jsondata, data);
+//		StartCoroutine(WaitForRequest(id, www));
+//	}	
 
 	public void POST(string url){
 		WWW www = new WWW (url);

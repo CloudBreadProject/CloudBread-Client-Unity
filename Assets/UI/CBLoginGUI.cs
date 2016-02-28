@@ -13,10 +13,15 @@ public class CBLoginUI : CBBaseUI {
 	
 	}
 
+	private void facbookLogin(){
+	}
+
 	public void OnGUI()
 	{
 		GUILayout.BeginArea (MainAreaRect);
-			GUILayout.Button ("Facebook 인증", GUILayout.Width (100));
+			if (GUILayout.Button ("Facebook 인증", GUILayout.Width (100))) {
+				facbookLogin ();
+			}
 			GUILayout.Button ("Twitter 인증", GUILayout.Width (100));
 			GUILayout.Button ("Google ID 인증", GUILayout.Width (100));
 			GUILayout.Button ("Microsoft ID 인증", GUILayout.Width (100));

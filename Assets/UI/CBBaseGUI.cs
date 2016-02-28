@@ -133,4 +133,11 @@ public class CBBaseUI : MonoBehaviour {
 	public virtual void ModifyButtonClicked(int row, Dictionary<string, object> rowDicData){
 		print ("[CBBaseGUI] ModifyButtonClicked");
 	}
+
+	public void CallBack(string jsonString, Dictionary<string, object>[] jsonRequestData){
+		print ("call back methods");
+		ResultDicData = jsonRequestData;
+		RequestResultJson = jsonString;
+		//		print ("call back methods");
+	}
 }

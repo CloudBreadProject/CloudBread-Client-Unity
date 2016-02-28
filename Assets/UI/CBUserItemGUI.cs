@@ -12,22 +12,23 @@ Members와 MemberItems는 1:N의 관계 – 아이템이 인벤에 있을 경우
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using AssemblyCSharp;
 
 public class CBUserItemGUI : CBBaseUI {
 
 	// Use this for initialization
 	void Start () {
-		ServerEndPoint = ServerAddress + "api/CBSelMemberItems";
+		cloudbread = new CloudBreadAzure(ServerAddress);
 
-		WWWHelper helper = WWWHelper.Instance;
-		helper.OnHttpRequest += OnHttpRequest;
-		helper.POST (2, ServerEndPoint, CreateJsonData ());
+		cloudbread.CBSelMemberItems(CallBack);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
+
+	CloudBreadAzure cloudbread;
 
 	private string[] _headerString = {
 		"rownum",
@@ -36,22 +37,7 @@ public class CBUserItemGUI : CBBaseUI {
 		"itemListsItemPrice",
 		"itemListsItemSellPrice"
 	};
-
-	public Dictionary<string, object> CreateJsonData(){
-		/*
-		 * {
-			  "memberID": "aaa",
-			  "Page": "1", // page number
-			  "PageSize": "5" // page size
-			}
-		 */
-		Dictionary<string, object> JsonDic = new Dictionary<string, object> ();
-		JsonDic.Add ("memberID", "aaa");
-		JsonDic.Add ("Page", "1");
-		JsonDic.Add ("PageSize", "5");
-
-		return JsonDic;
-	}
+		
 	public void OnGUI()
 	{
 		GUILayout.BeginArea(MainAreaRect);
@@ -59,12 +45,48 @@ public class CBUserItemGUI : CBBaseUI {
 				//				drawTable (1, _headerString.Length, _headerString);
 				drawTitleRow(titleData:_headerString);
 				if( ResultDicData!= null)
-					drawTable (ResultDicData.Length, _headerString.Length, _headerString, ResultDicData);
+					drawTablewithButton2 (ResultDicData.Length, _headerString.Length, ResultDicData, "rownum");
 
 				RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Height (300));
 			GUILayout.EndVertical();
 		GUILayout.EndArea ();
 
+	}
+
+	private void drawTablewithButton2(int row, int col, Dictionary<string, object>[] data, string PrimaryKey){
+		List<string> headerDatas = new List<string>( ResultDicData[0].Keys);
+		drawTitleRow (headerDatas);
+
+		GUILayout.BeginVertical ("box");
+		for (int j = 0; j < row; j++) {
+			GUILayout.BeginHorizontal ("box");
+			Dictionary<string,object> dic = data [j];
+			for (int i = 0; i < col; i++) {
+				string key = headerDatas [i];
+				if(!key.Equals(PrimaryKey)){
+					dic[key] = GUILayout.TextField ((string)dic[key], GUILayout.Width (100));
+				}else
+					GUILayout.Label ((string)dic[key], GUILayout.Width (100));
+			}
+			if (GUILayout.Button ("수 정", GUILayout.Width (80))) {
+				ModifyButtonClicked (j, dic);
+			}
+			if (GUILayout.Button ("사 용", GUILayout.Width (80))) {
+				UseButtonClicked (j, dic);
+			}
+
+			GUILayout.EndHorizontal ();
+		}
+		GUILayout.EndVertical ();
+	}
+
+	public override void ModifyButtonClicked(int row, Dictionary<string, object> rawDicData){
+		cloudbread.CBComUdtItemList1(rawDicData, CallBack);
+
+	}
+
+	public void UseButtonClicked(int row, Dictionary<string, object> rawDicData){
+		cloudbread.CBComSelItemList1(rawDicData["itemListID"].ToString(), CallBack);
 	}
 }
 /*
