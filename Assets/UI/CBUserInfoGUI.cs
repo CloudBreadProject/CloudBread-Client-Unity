@@ -21,6 +21,17 @@ public class CBUserInfoUI : CBBaseUI {
 	void Start () {
 		cloudbread = new CloudBreadAzure (ServerAddress);
 		cloudbread.CBSelLoginInfo (CallBack);
+
+		CBSelLoginInfoController api = new CBSelLoginInfoController(ServerAddress, SelLoginInfo_Success, SelLoginInfo_Error);
+
+	}
+
+	private void SelLoginInfo_Success(string id, WWW www){
+		Debug.Log ("[SelLoginInfo_Success]" + www.text);
+	}
+
+	private void SelLoginInfo_Error(string id, WWW www){
+		Debug.Log ("[SelLoginInfo_Error]" + www.text);
 	}
 
 	private CloudBreadAzure cloudbread;

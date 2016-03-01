@@ -7,15 +7,13 @@ public class CBLoginUI : CBBaseUI {
 
 	// Use this for initialization
 	void Start () {
-		azure_auth = new AzureAuthentication ();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+//		azure_auth = new AzureAuthentication ();
 	}
 
 	private AzureAuthentication azure_auth;
+
+	private string facebookToken = "";
+	private string facebookUserID = "";
 
 	private void facbookLogin(){
 
@@ -42,8 +40,7 @@ public class CBLoginUI : CBBaseUI {
 			Debug.Log("Failed to Initialize the Facebook SDK");
 		}
 	}
-
-
+		
 
 	private void AuthCallback (ILoginResult result) {
 		if (FB.IsLoggedIn) {
@@ -56,7 +53,13 @@ public class CBLoginUI : CBBaseUI {
 				Debug.Log(perm);
 			}
 			Debug.Log (aToken.TokenString);
-			var a = azure_auth.CreateToken (aToken.UserId, aToken.TokenString);
+			facebookToken = aToken.TokenString;
+			facebookUserID = aToken.UserId;
+//			var a = azure_auth.CreateToken (aToken.UserId, aToken.TokenString);
+			AzureAuthentication azure = new AzureAuthentication();
+			azure.Login (AzureAuthentication.AuthenticationProvider.Facebook, ServerAddress, facebookToken);
+//			Debug.Log (a);
+
 		} else {
 			Debug.Log("User cancelled login");
 		}
@@ -76,17 +79,25 @@ public class CBLoginUI : CBBaseUI {
 	public void OnGUI()
 	{
 		GUILayout.BeginArea (MainAreaRect);
-			if (GUILayout.Button ("Facebook 인증", GUILayout.Width (100))) {
-				facbookLogin ();
-				
-			}
-			if (GUILayout.Button ("Facebook web", GUILayout.Width (100))) {
-				
-			Application.ExternalCall("GetCurrentUser");
-			}
-			GUILayout.Button ("Twitter 인증", GUILayout.Width (100));
-			GUILayout.Button ("Google ID 인증", GUILayout.Width (100));
-			GUILayout.Button ("Microsoft ID 인증", GUILayout.Width (100));
+			GUILayout.BeginVertical ();
+				GUILayout.BeginHorizontal ();
+					if (GUILayout.Button ("Facebook 인증", GUILayout.Width (100))) {
+						facbookLogin ();
+						
+					}
+					GUILayout.Button ("Twitter 인증", GUILayout.Width (100));
+					GUILayout.Button ("Google ID 인증", GUILayout.Width (100));
+					GUILayout.Button ("Microsoft ID 인증", GUILayout.Width (100));
+				GUILayout.EndHorizontal ();
+				GUILayout.BeginHorizontal ();
+					GUILayout.Label ("UserID : ", GUILayout.Width (200));
+					GUILayout.Label (facebookUserID, GUILayout.Width (200));
+				GUILayout.EndHorizontal ();
+				GUILayout.BeginHorizontal ();
+					GUILayout.Label ("Facebook Token : ", GUILayout.Width (200));
+					GUILayout.Label (facebookToken, GUILayout.Width (200));
+				GUILayout.EndHorizontal ();
+			GUILayout.EndVertical ();
 		GUILayout.EndArea ();
 
 	}

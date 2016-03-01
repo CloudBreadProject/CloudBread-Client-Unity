@@ -4,12 +4,12 @@ using AssemblyCSharp;
 
 public class CloudBreadTestUI : MonoBehaviour {
 
-	public string ServerAddress = "https://dw-cloudbread2.azurewebsites.net/";
+	public string ServerAddress = "http://dw-cloudbread2.azurewebsites.net/";
 	private string FacebookAccessToken = "xxx";
 	public string AuthKey = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaWQ6YzZhZTNhOTQ3NTdiMDM3N2Y5OTgyZmQwODJhZWVhMmMiLCJpZHAiOiJmYWNlYm9vayIsInZlciI6IjMiLCJpc3MiOiJodHRwczovL2R3LWNsb3VkYnJlYWQteXMuYXp1cmV3ZWJzaXRlcy5uZXQvIiwiYXVkIjoiaHR0cHM6Ly9kdy1jbG91ZGJyZWFkLXlzLmF6dXJld2Vic2l0ZXMubmV0LyIsImV4cCI6MTQ1NjE1MDkxNywibmJmIjoxNDU2MTQ3MzE3fQ.YqE2gLZVAX-Q_97DydrFKRKWPSsxxncIWIqNs0xrIiE";
 
+
 	private enum TESTPAGE {main, login, authentication, userInfo, memberGameInfo, itemList, userItem, gameStage, notice, events, coupons};
-	private TESTPAGE currentPage = TESTPAGE.main;
 
 	private string jsonAreaString = "Json Area";
 	private string jsonAreaInitString = "Json Area";
@@ -57,70 +57,59 @@ public class CloudBreadTestUI : MonoBehaviour {
 			GUILayout.BeginVertical("box");
 			if (GUILayout.Button ("메인 페이지", GUILayout.Height(50))) {
 				print ("Main Page");
-				currentPage = TESTPAGE.main;
 				jsonAreaString = jsonAreaInitString;
 				PresentationView (TESTPAGE.main);
 				test ();
 			}
 			if (GUILayout.Button ("로그인 페이지", GUILayout.Height(50))) {
 				print ("Login Page");
-				currentPage = TESTPAGE.login;
 				jsonAreaString = jsonAreaInitString;
 				PresentationView (TESTPAGE.login);
 			}
 			if (GUILayout.Button ("인증 후 이름 \n 메일 저장", GUILayout.Height(50))) {
 				print ("Authentication Page");
 				PresentationView (TESTPAGE.authentication);
-				currentPage = TESTPAGE.authentication;
 				jsonAreaString = jsonAreaInitString;
 
 			}
 			if (GUILayout.Button ("회원 정보", GUILayout.Height(50))) {
 				print ("UserInfo Page");
 				PresentationView (TESTPAGE.userInfo);
-				currentPage = TESTPAGE.userInfo;
 				jsonAreaString = jsonAreaInitString;
 			}
 			if (GUILayout.Button ("게임 정보", GUILayout.Height(50))) {
 				print ("GameInfo Page");
 				PresentationView (TESTPAGE.memberGameInfo);
-				currentPage = TESTPAGE.memberGameInfo;
 				jsonAreaString = jsonAreaInitString;
 			}
 			if (GUILayout.Button ("아이템 목록", GUILayout.Height(50))) {
 				print ("ItemList Page");
 				PresentationView (TESTPAGE.itemList);
-				currentPage = TESTPAGE.itemList;
 				jsonAreaString = jsonAreaInitString;
 			}
 			if (GUILayout.Button ("게이머 소유\n아이템 목록", GUILayout.Height(50))) {
 				print ("UserItem Page");
 				PresentationView (TESTPAGE.userItem);
-				currentPage = TESTPAGE.userItem;
 				jsonAreaString = jsonAreaInitString;
 			}
 			if (GUILayout.Button ("게임 스테이지", GUILayout.Height(50))) {
 				print ("GameStage Page");
 				PresentationView (TESTPAGE.gameStage);
-				currentPage = TESTPAGE.gameStage;
 				jsonAreaString = jsonAreaInitString;
 			}
 			if (GUILayout.Button ("공지사항", GUILayout.Height(50))) {
 				print ("Notice Page");
 				PresentationView (TESTPAGE.notice);
-				currentPage = TESTPAGE.notice;
 				jsonAreaString = jsonAreaInitString;
 			}
 			if (GUILayout.Button ("이벤트", GUILayout.Height(50))) {
 				print ("Events Page");
 				PresentationView (TESTPAGE.events);
-				currentPage = TESTPAGE.events;
 				jsonAreaString = jsonAreaInitString;
 			}
 			if (GUILayout.Button ("쿠폰", GUILayout.Height(50))) {
 				print ("Coupons Page");
 				PresentationView (TESTPAGE.coupons);
-				currentPage = TESTPAGE.coupons;
 				jsonAreaString = jsonAreaInitString;
 			}
 			GUILayout.EndVertical();
@@ -136,8 +125,9 @@ public class CloudBreadTestUI : MonoBehaviour {
 					if (GUILayout.Button ("Ping 확인", GUILayout.Width(100))) {
 						WWWHelper helper = WWWHelper.Instance;
 						helper.OnHttpRequest += OnHttpRequest;
-						helper.get (10, "http://dw-cloudbread2.azurewebsites.net/api/CBSocketAuth");
-
+//						helper.get (10, "http://dw-cloudbread2.azurewebsites.net/api/CBSocketAuth");
+//						helper.get(19, "http://dw-cloudbread2.azurewebsites.net/api/ver");
+//						print(AuthenticationProvider.Facebook.ToString().ToLower());
 
 
 					}
@@ -171,7 +161,7 @@ public class CloudBreadTestUI : MonoBehaviour {
 
 	}
 
-	void OnHttpRequest(int id, WWW www) {
+	void OnHttpRequest(string id, WWW www) {
 		WWWHelper helper = WWWHelper.Instance;
 		helper.OnHttpRequest -= OnHttpRequest;
 

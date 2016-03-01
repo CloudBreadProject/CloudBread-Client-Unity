@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace AssemblyCSharp
 {
@@ -13,7 +14,22 @@ namespace AssemblyCSharp
 
 		public string ServerAddress = "";
 
+		public void getLoginInfoData(){
+//			CBSelLoginInfoController controller = new CBSelLoginInfoController(serverAddress,
+		}
+
 		private Action<string, Dictionary<string, object>[]> _requestCallback = null;
+
+		public void CBVersion(Action<string, Dictionary<string, object>[]> callback){
+			string ServerEndPoint = ServerAddress + "api/ver";
+			WWWHelper helper = WWWHelper.Instance;
+			helper.OnHttpRequest += OnHttpRequest;
+
+			helper.get ("A01", ServerEndPoint);
+
+			_requestCallback = callback;
+
+		}
 
 		public void AzureLogin(Action<string, Dictionary<string, object>[]> callback){
 			string ServerEndPoint = ServerAddress + "login/";
@@ -41,14 +57,17 @@ namespace AssemblyCSharp
 			JsonDic.Add ("LastIPaddress", "LastIPaddress");
 			JsonDic.Add ("LastMACAddress", "LastMACAddress");
 
+
 			helper.POST (2, ServerEndPoint, JsonDic);
 
 			_requestCallback = callback;
 
+			helper.POSTwithRestSharp (123, ServerAddress, "api/CBSelLoginInfo", JsonDic);
+
 		}
 
 		// POST api/CBSelLoginInfo request
-		public void OnHttpRequest(int id, WWW www) {
+		public void OnHttpRequest(string id, WWW www) {
 			WWWHelper helper = WWWHelper.Instance;
 			helper.OnHttpRequest -= OnHttpRequest;
 
@@ -57,8 +76,17 @@ namespace AssemblyCSharp
 			} else {
 				Debug.Log (www.text);
 //				RequestResultJson = www.text;
-				var ResultDicData = (Dictionary<string, object>[]) JsonParser.Read2Object(www.text);
-				_requestCallback (www.text, ResultDicData);
+
+//				var RequestJson = Convert.FromBase64String(www.text);
+//				var RequestJsonString = Encoding.UTF8.GetString (RequestJson);
+				Encoding enc = Encoding.GetEncoding("euc-kr");
+
+				string RequestJsonString = enc.GetString(Encoding.UTF8.GetBytes(www.text));
+
+
+
+				var ResultDicData = (Dictionary<string, object>[]) JsonParser.Read2Object(RequestJsonString);
+				_requestCallback (RequestJsonString, ResultDicData);
 
 			}
 		}

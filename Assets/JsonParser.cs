@@ -11,6 +11,10 @@ namespace AssemblyCSharp
 		{
 		}
 
+		public static string Write(object obj){
+			return JsonFx.Json.JsonWriter.Serialize (obj);
+		}
+
 		public static string Write(Dictionary<string, object> obj){
 			return JsonWriter.Serialize (obj);
 		}
@@ -25,6 +29,15 @@ namespace AssemblyCSharp
 			var requestDic = JsonReader.Deserialize (json);
 			return requestDic;
 		}
+
+//
+//		// utf-8 인코딩
+//		byte [] bytesForEncoding = Encoding.UTF8.GetBytes ( 인코딩 할 유니코드 string 변수 ) ;
+//		string encodedString = Convert.ToBase64String (bytesForEncoding );
+//
+//		// utf-8 디코딩
+//		byte[] decodedBytes = Convert.FromBase64String (encodedString );
+//		string decodedString = Encoding.UTF8.GetString (decodedBytes );
 	}
 }
 

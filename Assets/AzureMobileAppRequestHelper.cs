@@ -3,6 +3,7 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
+using RestSharp;
 
 namespace AssemblyCSharp
 {
@@ -61,6 +62,55 @@ namespace AssemblyCSharp
 		
 			return header;
 		}
+
+
+
+//		private Action<AzureResponse<MobileServiceUser>> _LoginAsyncCallback = null;
+
+//		public void LoginAsync(AuthenticationProvider provider, string token, Action<AzureResponse<MobileServiceUser>> callback)
+//		{
+//			AuthenticationToken authToken = CreateToken(provider, token);
+//			_LoginAsyncCallback = callback;
+//
+//			var path = "/login/" + provider.ToString().ToLower();
+//			var baseClient = new RestClient(_baseEndPoint);
+//			var request = new RestRequest(path, Method.POST);
+//			var json = SerializeObject(authToken);
+//
+//			request.RequestFormat = DataFormat.Json;
+//			request.AddHeader("Content-Type", "application/json");
+//			request.AddParameter("application/json", json, ParameterType.RequestBody);
+//
+//			var handle = baseClient.ExecuteAsync<MobileServiceUser>(request, LoginAsyncHandler);
+//		}
+//
+//		private void LoginAsyncHandler(IRestResponse<MobileServiceUser> restResponse, RestRequestAsyncHandle handle)
+//		{
+//			var response = DeserialiseObject<MobileServiceUser>(restResponse);
+//			response.handle = handle;
+//			_LoginAsyncCallback(response);
+//		}
+//
+//		private static AuthenticationToken CreateToken(AuthenticationProvider provider, string token)
+//		{
+//			AuthenticationToken authToken = new AuthenticationToken();
+//			switch (provider)
+//			{
+//			case AuthenticationProvider.Facebook:
+//			case AuthenticationProvider.Google:
+//			case AuthenticationProvider.Twitter:
+//				{
+//					authToken = new FacebookGoogleAuthenticationToken() { access_token = token };
+//					break;
+//				}
+//			case AuthenticationProvider.MicrosoftAccount:
+//				{
+//					authToken = new MicrosoftAuthenticationToken() { authenticationToken = token };
+//					break;
+//				}
+//			}
+//			return authToken;
+//		}
 	}
 }
 
