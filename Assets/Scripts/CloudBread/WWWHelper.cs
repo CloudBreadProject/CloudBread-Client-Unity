@@ -169,34 +169,6 @@ public class WWWHelper : MonoBehaviour {
 //			RequestResultJson = decodedString;
 			print ("[Request uni decoded] : " + decodedString2);
 		});
-//
-//		// execute the request
-//		IRestResponse response = client.Execute(request);
-//		var content = response.Content; // raw content as string
-////		response.
-//		print (content);
-//		print (response.ContentEncoding);
-//		var a = Encoding.Unicode.GetBytes (content);
-//		var b = Encoding.UTF8.GetString (a);
-//		print (b);
-//		print (Encoding.Unicode.GetBytes(response.
-//		// or automatically deserialize result
-//		// return content type is sniffed but can be explicitly set via RestClient.AddHandler();
-//		RestResponse<Person> response2 = client.Execute<Person>(request);
-//		var name = response2.Data.Name;
-//
-//		// easy async support
-//		client.ExecuteAsync(request, response => {
-//			Console.WriteLine(response.Content);
-//		});
-//
-//		// async with deserialization
-//		var asyncHandle = client.ExecuteAsync<Person>(request, response => {
-//			Console.WriteLine(response.Data.Name);
-//		});
-//
-//		// abort the request on demand
-//		asyncHandle.Abort();
 	}
 
 //	public void post(int id, string url, Dictionary<string, string> data) {

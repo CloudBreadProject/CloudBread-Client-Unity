@@ -4,7 +4,7 @@ using AssemblyCSharp;
 
 public class CloudBreadTestUI : MonoBehaviour {
 
-	public string ServerAddress = "http://dw-cloudbread2.azurewebsites.net/";
+	private string ServerAddress = "https://dw-cloudbread2.azurewebsites.net/";
 	private string FacebookAccessToken = "xxx";
 	public string AuthKey = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaWQ6YzZhZTNhOTQ3NTdiMDM3N2Y5OTgyZmQwODJhZWVhMmMiLCJpZHAiOiJmYWNlYm9vayIsInZlciI6IjMiLCJpc3MiOiJodHRwczovL2R3LWNsb3VkYnJlYWQteXMuYXp1cmV3ZWJzaXRlcy5uZXQvIiwiYXVkIjoiaHR0cHM6Ly9kdy1jbG91ZGJyZWFkLXlzLmF6dXJld2Vic2l0ZXMubmV0LyIsImV4cCI6MTQ1NjE1MDkxNywibmJmIjoxNDU2MTQ3MzE3fQ.YqE2gLZVAX-Q_97DydrFKRKWPSsxxncIWIqNs0xrIiE";
 
@@ -30,24 +30,6 @@ public class CloudBreadTestUI : MonoBehaviour {
 		requestHelper = new AzureMobileAppRequestHelper ();
 	}
 
-	private void AuthenticationGUI(){
-
-
-//		GUILayout.BeginHorizontal ("box");
-		GUILayout.Button ("Facebook 인증", GUILayout.Width (100));
-		GUILayout.Button ("Twitter 인증", GUILayout.Width (100));
-		GUILayout.Button ("Google ID 인증", GUILayout.Width (100));
-		GUILayout.Button ("Microsoft ID 인증", GUILayout.Width (100));
-		ServerAddress = GUILayout.TextField (ServerAddress);
-//		GUILayout.BeginHorizontal ();
-
-
-	}
-
-	public void test(){
-
-	}
-
 	public void OnGUI()
 	{
 		
@@ -59,7 +41,7 @@ public class CloudBreadTestUI : MonoBehaviour {
 				print ("Main Page");
 				jsonAreaString = jsonAreaInitString;
 				PresentationView (TESTPAGE.main);
-				test ();
+				
 			}
 			if (GUILayout.Button ("로그인 페이지", GUILayout.Height(50))) {
 				print ("Login Page");
@@ -183,7 +165,7 @@ public class CloudBreadTestUI : MonoBehaviour {
 		
 		switch (testpage) {
 		case TESTPAGE.main:
-			ui = MainContainer.AddComponent (typeof(CBBaseUI)) as CBBaseUI;
+			ui = MainContainer.AddComponent (typeof(CBMainGUI)) as CBBaseUI;
 			break;
 		case TESTPAGE.login:
 			ui = MainContainer.AddComponent(typeof(CBLoginUI)) as CBBaseUI;
