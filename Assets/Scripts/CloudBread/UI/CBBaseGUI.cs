@@ -14,6 +14,7 @@ public class CBBaseUI : MonoBehaviour {
 //		var components = MainContainer.GetComponents(typeof(CloudBreadTestUI));
 //		components.GetValue(
 
+
 	}
 	
 	// Update is called once per frame
@@ -24,7 +25,8 @@ public class CBBaseUI : MonoBehaviour {
 	public string ServerEndPoint;
 	public string ServerAddress;
 
-	public Rect MainAreaRect = new Rect (0, 100, Screen.width - 120, 500);
+	public Rect MainAreaRect = new Rect (0, 150, Screen.width - 120, 600);
+	public Vector2 scrollPosition;
 
 
 	public string RequestResultJson = "";
@@ -88,6 +90,24 @@ public class CBBaseUI : MonoBehaviour {
 		GUILayout.EndVertical ();
 	}
 
+	protected void drawTable(int row, Dictionary<string, object>[] data){
+		List<string> headerDatas = new List<string>( ResultDicData[0].Keys);
+		drawTitleRow (headerDatas);
+
+		GUILayout.BeginVertical ("box");
+		for (int j = 0; j < row; j++) {
+			GUILayout.BeginHorizontal ("box");
+			Dictionary<string,object> dic = data [j];
+			for (int i = 0; i < headerDatas.Count; i++) {
+				string key = headerDatas [i];
+				GUILayout.Label ((string)dic[key], GUILayout.Width (100));
+			}
+
+			GUILayout.EndHorizontal ();
+		}
+		GUILayout.EndVertical ();
+	}
+
 	protected void drawTablewithButton(int row, int col, string[] headData, Dictionary<string, object>[] data, string PrimaryKey){
 		GUILayout.BeginVertical ("box");
 		for (int j = 0; j < row; j++) {
@@ -119,7 +139,7 @@ public class CBBaseUI : MonoBehaviour {
 			Dictionary<string,object> dic = data [j];
 			for (int i = 0; i < col; i++) {
 				string key = headerDatas [i];
-				if(!key.Equals("PrimaryKey")){
+				if(!key.Equals(PrimaryKey)){
 					dic[key] = GUILayout.TextField ((string)dic[key], GUILayout.Width (100));
 				}else
 					GUILayout.Label ((string)dic[key], GUILayout.Width (100));

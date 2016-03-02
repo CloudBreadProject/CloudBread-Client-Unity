@@ -5,6 +5,18 @@ using System.Collections.Generic;
 using AssemblyCSharp;
 
 public class AzureAuthentication : MonoBehaviour {
+	
+	public class AuthenticationToken
+	{
+	}
+	public class FacebookGoogleAuthenticationToken : AuthenticationToken
+	{
+		public string access_token;
+	}
+	public class MicrosoftAuthenticationToken : AuthenticationToken
+	{
+		public string authenticationToken;
+	}
 
 	public enum AuthenticationProvider
 	{
@@ -27,23 +39,24 @@ public class AzureAuthentication : MonoBehaviour {
 
 	private string ServerAddress = "";
 
-//	public AzureAuthentication (AuthenticationProvider provider, string ServerAddress, Action<string, Dictionary<string, object>> callback){
-//		this.ServerAddress = ServerAddress;
-//	}
+	private Action<string,WWW> Callback_Success;
+	private Action<string,WWW> Callback_Error;
 
-	public void Login(AuthenticationProvider provider, string ServerAddress, string token){
-		var path = "login/" + provider.ToString().ToLower();
+	public void Login(AuthenticationProvider provider, string ServerAddress, string token, Action<string, WWW> callback_success, Action<string, WWW> callback_error){
+		var path = ".auth/login/" + provider.ToString().ToLower();
 
 		AuthenticationToken authToken = CreateToken(provider, token);
 
 		var json = JsonParser.Write(authToken);
 		print (json);
 
+		Callback_Success = callback_success;
+		Callback_Error = callback_error;
+
 		WWWHelper helper = WWWHelper.Instance;
 		helper.OnHttpRequest += OnHttpRequest;
 
-		helper.POST ("a", ServerAddress + path, json);
-
+		helper.POST ("Login", ServerAddress + path, json);
 	}
 
 	public void OnHttpRequest(string id, WWW www) {
@@ -51,16 +64,13 @@ public class AzureAuthentication : MonoBehaviour {
 		helper.OnHttpRequest -= OnHttpRequest;
 
 		if (www.error != null) {
-			Debug.Log ("[Error] " + www.error);
-//			RequestResultJson = www.error;
+//			Debug.Log ("[Error] " + www.error);
+			Callback_Error(id,www);
 		} else {
-			Debug.Log (www.text);
+//			Debug.Log (www.text);
+			Callback_Success(id, www);
 		}
 	}
-
-//	public LoginHandler(IRestResponse<MobileServiceUser> restResponse, RestRequestAsyncHandle handle){
-//
-//	}
 
 	private static AuthenticationToken CreateToken(AuthenticationProvider provider, string token)
 	{
@@ -83,23 +93,5 @@ public class AzureAuthentication : MonoBehaviour {
 		return authToken;
 	}
 
-	public string CreateToken(string actual_user_id, string accessToken){
-		string json = "{ \"facebook\":{ \"userId\":\"Facebook:"+actual_user_id + "\", \"accessToken\":\"" + accessToken + "\" } }";
-		Debug.Log (json);
-		return json;
-	}
-
-
 }
 
-public class AuthenticationToken
-{
-}
-public class FacebookGoogleAuthenticationToken : AuthenticationToken
-{
-	public string access_token;
-}
-public class MicrosoftAuthenticationToken : AuthenticationToken
-{
-	public string authenticationToken;
-}

@@ -21,8 +21,7 @@ public class CBUserInfoUI : CBBaseUI {
 	void Start () {
 		cloudbread = new CloudBreadAzure (ServerAddress);
 		cloudbread.CBSelLoginInfo (CallBack);
-
-		CBSelLoginInfoController api = new CBSelLoginInfoController(ServerAddress, SelLoginInfo_Success, SelLoginInfo_Error);
+//		CBSelLoginInfoController api = new CBSelLoginInfoController(ServerAddress, SelLoginInfo_Success, SelLoginInfo_Error);
 
 	}
 
@@ -69,20 +68,17 @@ public class CBUserInfoUI : CBBaseUI {
 	public void OnGUI()
 	{
 		GUILayout.BeginArea(MainAreaRect);
+		scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Width(MainAreaRect.width), GUILayout.Height(MainAreaRect.height));
 			GUILayout.BeginVertical();
-				GUILayout.BeginHorizontal ();
-					GUILayout.Label (ServerEndPoint);
-					GUILayout.Button ("확인");
-				GUILayout.EndHorizontal ();
-				drawTitleRow (_headerString);
 				if (ResultDicData != null) {
 //					List<string> headers = new List<string>( ResultDicData[0].Keys);
 //					drawTitleRow(titleData:headers);
-					drawTablewithButton (ResultDicData.Length, _headerString.Length, _headerString, ResultDicData, "memberID");
+					drawTablewithButtonUserInfo (ResultDicData.Length,  ResultDicData, "memberID");
 				}
 
 				RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Height (300));
 			GUILayout.EndVertical();
+		GUILayout.EndScrollView ();
 		GUILayout.EndArea ();
 
 	}
@@ -98,6 +94,30 @@ public class CBUserInfoUI : CBBaseUI {
 		print ("call back methods");
 //		ResultDicData = jsonRequestData;
 		//		print ("call back methods");
+	}
+
+	private void drawTablewithButtonUserInfo(int row, Dictionary<string, object>[] data, string PrimaryKey){
+		List<string> headerDatas = new List<string>( ResultDicData[0].Keys);
+		drawTitleRow (headerDatas);
+
+		GUILayout.BeginVertical ("box");
+		for (int j = 0; j < row; j++) {
+			GUILayout.BeginHorizontal ("box");
+			Dictionary<string,object> dic = data [j];
+			for (int i = 0; i < headerDatas.Count; i++) {
+				string key = headerDatas [i];
+				if(!key.Equals(PrimaryKey)){
+					dic[key] = GUILayout.TextField ((string)dic[key], GUILayout.Width (100));
+				}else
+					GUILayout.Label ((string)dic[key], GUILayout.Width (100));
+			}
+			if (GUILayout.Button ("수 정", GUILayout.Width (80))) {
+				ModifyButtonClicked (j, dic);
+			}
+
+			GUILayout.EndHorizontal ();
+		}
+		GUILayout.EndVertical ();
 	}
 
 

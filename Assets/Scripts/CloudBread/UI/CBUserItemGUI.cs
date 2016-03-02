@@ -30,30 +30,32 @@ public class CBUserItemGUI : CBBaseUI {
 
 	CloudBreadAzure cloudbread;
 
-	private string[] _headerString = {
-		"rownum",
-		"itemListsItemName",
-		"itemListsItemDescription",
-		"itemListsItemPrice",
-		"itemListsItemSellPrice"
-	};
+//	private string[] _headerString = {
+//		"rownum",
+//		"itemListsItemName",
+//		"itemListsItemDescription",
+//		"itemListsItemPrice",
+//		"itemListsItemSellPrice"
+//	};
 		
 	public void OnGUI()
 	{
 		GUILayout.BeginArea(MainAreaRect);
+		scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Width(MainAreaRect.width), GUILayout.Height(MainAreaRect.height));
 			GUILayout.BeginVertical();
 				//				drawTable (1, _headerString.Length, _headerString);
-				drawTitleRow(titleData:_headerString);
+//				drawTitleRow(titleData:_headerString);
 				if( ResultDicData!= null)
-					drawTablewithButton2 (ResultDicData.Length, _headerString.Length, ResultDicData, "rownum");
+					drawTablewithButton2 (ResultDicData.Length, ResultDicData, "rownum");
 
 				RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Height (300));
 			GUILayout.EndVertical();
+		GUILayout.EndScrollView ();
 		GUILayout.EndArea ();
 
 	}
 
-	private void drawTablewithButton2(int row, int col, Dictionary<string, object>[] data, string PrimaryKey){
+	private void drawTablewithButton2(int row, Dictionary<string, object>[] data, string PrimaryKey){
 		List<string> headerDatas = new List<string>( ResultDicData[0].Keys);
 		drawTitleRow (headerDatas);
 
@@ -61,17 +63,17 @@ public class CBUserItemGUI : CBBaseUI {
 		for (int j = 0; j < row; j++) {
 			GUILayout.BeginHorizontal ("box");
 			Dictionary<string,object> dic = data [j];
-			for (int i = 0; i < col; i++) {
+			for (int i = 0; i < headerDatas.Count; i++) {
 				string key = headerDatas [i];
-				if(!key.Equals(PrimaryKey)){
-					dic[key] = GUILayout.TextField ((string)dic[key], GUILayout.Width (100));
-				}else
+//				if(!key.Equals("PrimaryKey")){
+//					dic[key] = GUILayout.TextField ((string)dic[key], GUILayout.Width (100));
+//				}else
 					GUILayout.Label ((string)dic[key], GUILayout.Width (100));
 			}
 			if (GUILayout.Button ("수 정", GUILayout.Width (80))) {
 				ModifyButtonClicked (j, dic);
 			}
-			if (GUILayout.Button ("사 용", GUILayout.Width (80))) {
+			if (GUILayout.Button ("조 회", GUILayout.Width (80))) {
 				UseButtonClicked (j, dic);
 			}
 

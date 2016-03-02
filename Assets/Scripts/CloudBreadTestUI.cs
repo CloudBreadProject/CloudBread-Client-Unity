@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using AssemblyCSharp;
+using JsonFx;
 
 public class CloudBreadTestUI : MonoBehaviour {
-
-	private string ServerAddress = "https://dw-cloudbread2.azurewebsites.net/";
-	private string FacebookAccessToken = "xxx";
+	
+//	private string ServerAddress = "https://dw-cloudbread2.azurewebsites.net/";
+	private string ServerAddress = "https://yscloudbreadmobile.azurewebsites.net/";
 	public string AuthKey = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaWQ6YzZhZTNhOTQ3NTdiMDM3N2Y5OTgyZmQwODJhZWVhMmMiLCJpZHAiOiJmYWNlYm9vayIsInZlciI6IjMiLCJpc3MiOiJodHRwczovL2R3LWNsb3VkYnJlYWQteXMuYXp1cmV3ZWJzaXRlcy5uZXQvIiwiYXVkIjoiaHR0cHM6Ly9kdy1jbG91ZGJyZWFkLXlzLmF6dXJld2Vic2l0ZXMubmV0LyIsImV4cCI6MTQ1NjE1MDkxNywibmJmIjoxNDU2MTQ3MzE3fQ.YqE2gLZVAX-Q_97DydrFKRKWPSsxxncIWIqNs0xrIiE";
 
 
@@ -14,8 +15,6 @@ public class CloudBreadTestUI : MonoBehaviour {
 	private string jsonAreaString = "Json Area";
 	private string jsonAreaInitString = "Json Area";
 
-	private AzureMobileApp _azure;
-
 	private GameObject MainContainer;
 	private CBBaseUI _mainView;
 
@@ -23,11 +22,18 @@ public class CloudBreadTestUI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		_azure = new AzureMobileApp (ServerAddress, AuthKey);
 		MainContainer = new GameObject ();
 		MainContainer.name = "MainView";
 
 		requestHelper = new AzureMobileAppRequestHelper ();
+	}
+
+
+	private void TEST(){
+//		var a = "{\"authenticationToken\":\"a.b.L-39TJ__8jrMNcGkbHeRu_7-OPpu-v\",\"user\":{\"userId\":\"sid:aafc0768a725977765a33a63b1ce34ae\"}}";
+//		Auth auth = JsonParser.Read<Auth> (a);
+//
+//		print (auth.authenticationToken + " : " + auth.user.userId);
 	}
 
 	public void OnGUI()
@@ -104,15 +110,11 @@ public class CloudBreadTestUI : MonoBehaviour {
 				GUILayout.BeginHorizontal ("box");
 					GUILayout.Label ("서버 주소 : ", GUILayout.Width(80));
 					ServerAddress = GUILayout.TextField (ServerAddress, GUILayout.Width(300));
-					if (GUILayout.Button ("Ping 확인", GUILayout.Width(100))) {
-						WWWHelper helper = WWWHelper.Instance;
-						helper.OnHttpRequest += OnHttpRequest;
-//						helper.get (10, "http://dw-cloudbread2.azurewebsites.net/api/CBSocketAuth");
-//						helper.get(19, "http://dw-cloudbread2.azurewebsites.net/api/ver");
-//						print(AuthenticationProvider.Facebook.ToString().ToLower());
-
-
-					}
+//					if (GUILayout.Button ("Ping 확인", GUILayout.Width(100))) {
+//						TEST ();
+//
+//
+//					}
 				GUILayout.EndHorizontal ();
 				GUILayout.BeginHorizontal ();
 					GUILayout.BeginHorizontal ("box");
@@ -124,11 +126,14 @@ public class CloudBreadTestUI : MonoBehaviour {
 						GUILayout.Label ("CloudBread ver 2.0.0-dev");
 					GUILayout.EndHorizontal ();
 				GUILayout.EndHorizontal ();
+
+				GUILayout.BeginHorizontal ("box");
+					GUILayout.Label ("Auth Token : ");
+					if (AzureMobileAppRequestHelper.AuthToken != null)
+						GUILayout.TextField (AzureMobileAppRequestHelper.AuthToken);
+				GUILayout.EndHorizontal ();
 			GUILayout.EndVertical ();
 
-		GUILayout.BeginHorizontal ("box", GUILayout.Height(250));
-	
-			GUILayout.EndHorizontal ();
 			/////////////////////////
 //		jsonAreaString = GUILayout.TextArea (jsonAreaString, GUILayout.Height (300));
 		

@@ -2,18 +2,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using Facebook.Unity;
+using AssemblyCSharp;
 
 public class CBLoginUI : CBBaseUI {
 
 	// Use this for initialization
 	void Start () {
-//		azure_auth = new AzureAuthentication ();
+		ContentAreaRect = new Rect (MainAreaRect.width/2 - (contentWidth/2), MainAreaRect.y, contentWidth, MainAreaRect.height);
 	}
 
-	private AzureAuthentication azure_auth;
+	public int contentWidth = 750;
+	private Rect ContentAreaRect;
 
 	private string facebookToken = "";
 	private string facebookUserID = "";
+
+	private bool facebookLogined = false;
+	private bool acquireUserToken = false;
+
+	private string AuthToken;
+	private string UserID;
+	private AzureAuthentication azureAuth;
 
 	private void facbookLogin(){
 
@@ -52,18 +61,38 @@ public class CBLoginUI : CBBaseUI {
 			foreach (string perm in aToken.Permissions) {
 				Debug.Log(perm);
 			}
-			Debug.Log (aToken.TokenString);
+
 			facebookToken = aToken.TokenString;
 			facebookUserID = aToken.UserId;
-//			var a = azure_auth.CreateToken (aToken.UserId, aToken.TokenString);
-			AzureAuthentication azure = new AzureAuthentication();
-			azure.Login (AzureAuthentication.AuthenticationProvider.Facebook, ServerAddress, facebookToken);
-//			Debug.Log (a);
+			facebookLogined = true;
+
+			// AuzreAuthentication 을 사용하여 인증 토큰 가져 오기
+			azureAuth = new AzureAuthentication();
+			azureAuth.Login (AzureAuthentication.AuthenticationProvider.Facebook, ServerAddress, facebookToken, Login_success, Login_error);
 
 		} else {
 			Debug.Log("User cancelled login");
 		}
 	}
+
+	public void Login_success(string id, WWW www){
+		acquireUserToken = true;
+
+		string resultJson = www.text;
+		AuthData resultData = JsonParser.Read<AuthData> (resultJson);
+		AuthToken = resultData.authenticationToken;
+		UserID = resultData.user.userId;
+
+		AzureMobileAppRequestHelper.AuthToken = AuthToken;
+
+		RequestResultJson = resultJson;
+	}
+
+	public void Login_error(string id, WWW www){
+		RequestResultJson = "[Error] : " + www.text;
+
+	}
+
 
 	private void OnHideUnity (bool isGameShown)
 	{
@@ -75,29 +104,56 @@ public class CBLoginUI : CBBaseUI {
 			Time.timeScale = 1;
 		}
 	}
-
+		
 	public void OnGUI()
 	{
-		GUILayout.BeginArea (MainAreaRect);
+		GUILayout.BeginArea (ContentAreaRect);
+		scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Width(ContentAreaRect.width), GUILayout.Height(ContentAreaRect.height));
 			GUILayout.BeginVertical ();
 				GUILayout.BeginHorizontal ();
-					if (GUILayout.Button ("Facebook 인증", GUILayout.Width (100))) {
+					if (GUILayout.Button ("Facebook 인증", GUILayout.Width (170))) {
 						facbookLogin ();
-						
 					}
-					GUILayout.Button ("Twitter 인증", GUILayout.Width (100));
-					GUILayout.Button ("Google ID 인증", GUILayout.Width (100));
-					GUILayout.Button ("Microsoft ID 인증", GUILayout.Width (100));
+					GUILayout.Button ("Twitter 인증", GUILayout.Width (170));
+					GUILayout.Button ("Google ID 인증", GUILayout.Width (170));
+					GUILayout.Button ("Microsoft ID 인증", GUILayout.Width (170));
 				GUILayout.EndHorizontal ();
-				GUILayout.BeginHorizontal ();
-					GUILayout.Label ("UserID : ", GUILayout.Width (200));
-					GUILayout.Label (facebookUserID, GUILayout.Width (200));
-				GUILayout.EndHorizontal ();
-				GUILayout.BeginHorizontal ();
-					GUILayout.Label ("Facebook Token : ", GUILayout.Width (200));
-					GUILayout.Label (facebookToken, GUILayout.Width (200));
-				GUILayout.EndHorizontal ();
+
+				if (facebookLogined) {
+					GUILayout.Label ("");
+					GUILayout.Label ("Facebook Data : ");
+					GUILayout.BeginVertical ("box");
+						GUILayout.BeginHorizontal ("box");
+							GUILayout.Label ("UserID : ", GUILayout.Width (150));
+							GUILayout.Label (facebookUserID, GUILayout.Width (450));
+						GUILayout.EndHorizontal ();
+						GUILayout.BeginHorizontal ("box");
+							GUILayout.Label ("Facebook Token : ", GUILayout.Width (150));
+							GUILayout.Label (facebookToken, GUILayout.Width (450));
+						GUILayout.EndHorizontal ();
+					GUILayout.EndVertical ();
+					
+				}
+				
+				if (acquireUserToken) {
+					GUILayout.Label ("");
+					GUILayout.Label ("User Auth Data : ");
+					GUILayout.BeginVertical ("box");
+						GUILayout.BeginHorizontal ("box");
+							GUILayout.Label ("Authentication Token : ", GUILayout.Width (150));
+							GUILayout.Label (AuthToken, GUILayout.Width (450));
+						GUILayout.EndHorizontal ();
+						GUILayout.BeginHorizontal ("box");
+							GUILayout.Label ("User ID : ", GUILayout.Width (150));
+							GUILayout.Label (UserID, GUILayout.Width (450));
+						GUILayout.EndHorizontal ();
+					GUILayout.EndVertical ();
+				}
+				GUILayout.Label ("");
+				GUILayout.Label ("Request Result : ");
+				RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Width(contentWidth-35), GUILayout.Height(300));
 			GUILayout.EndVertical ();
+		GUILayout.EndScrollView ();
 		GUILayout.EndArea ();
 
 	}

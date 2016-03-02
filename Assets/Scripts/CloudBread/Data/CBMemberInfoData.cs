@@ -12,6 +12,11 @@ namespace AssemblyCSharp
 			get;
 			set;
 		}
+
+		public string authenticationToken {
+			get;
+			set;
+		}
 	}
 }
 

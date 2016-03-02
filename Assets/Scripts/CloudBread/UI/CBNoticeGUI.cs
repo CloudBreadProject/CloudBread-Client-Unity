@@ -25,17 +25,17 @@ public class CBNoticeGUI : CBBaseUI {
 	
 	}
 
-	private string[] _headerString = {
-		"noticeID",
-		"noticeCategory1",
-		"noticeCategory2",
-		"targetGroup",
-		"targetOS",
-		"targetDevice",
-		"noticeImageLink",
-		"title",
-		"content"
-	};
+//	private string[] _headerString = {
+//		"noticeID",
+//		"noticeCategory1",
+//		"noticeCategory2",
+//		"targetGroup",
+//		"targetOS",
+//		"targetDevice",
+//		"noticeImageLink",
+//		"title",
+//		"content"
+//	};
 
 	public Dictionary<string, object> CreateJsonData(){
 		var JsonDic = new Dictionary<string, object> ();
@@ -44,18 +44,50 @@ public class CBNoticeGUI : CBBaseUI {
 		return JsonDic;
 	}
 
+	private void NotShowNotice(int row, Dictionary<string, object> NoticeData){
+
+	}
+
 	public void OnGUI()
 	{
 		GUILayout.BeginArea(MainAreaRect);
+		scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Width(MainAreaRect.width), GUILayout.Height(MainAreaRect.height));
 			GUILayout.BeginVertical();
 				//				drawTable (1, _headerString.Length, _headerString);
-				drawTitleRow(titleData:_headerString);
-				if( ResultDicData!= null)
-					drawTable (ResultDicData.Length, _headerString.Length, _headerString, ResultDicData);
+//				drawTitleRow(titleData:_headerString);
+		if (ResultDicData != null)
+			drawTablewithButtonNotice (ResultDicData.Length, ResultDicData);
+//					drawTable (ResultDicData.Length, _headerString.Length, _headerString, ResultDicData);
 
 				RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Height (300));
 			GUILayout.EndVertical();
+		GUILayout.EndScrollView ();
 		GUILayout.EndArea ();
 
+	}
+
+	private void drawTablewithButtonNotice(int row, Dictionary<string, object>[] data){
+		List<string> headerDatas = new List<string>( ResultDicData[0].Keys);
+		drawTitleRow (headerDatas);
+
+		GUILayout.BeginVertical ("box");
+		for (int j = 0; j < row; j++) {
+			GUILayout.BeginHorizontal ("box");
+			Dictionary<string,object> dic = data [j];
+			for (int i = 0; i < headerDatas.Count; i++) {
+				string key = headerDatas [i];
+//				if(!key.Equals("PrimaryKey")){
+//					dic[key] = GUILayout.TextField ((string)dic[key], GUILayout.Width (100));
+//				}else
+					GUILayout.Label ((string)dic[key], GUILayout.Width (100));
+			}
+			if (GUILayout.Button ("오늘은 보지 않음", GUILayout.Width (100))) {
+				NotShowNotice (row, dic);
+//				ModifyButtonClicked (j, dic);
+			}
+
+			GUILayout.EndHorizontal ();
+		}
+		GUILayout.EndVertical ();
 	}
 }

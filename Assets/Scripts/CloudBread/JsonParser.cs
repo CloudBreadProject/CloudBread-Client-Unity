@@ -30,6 +30,10 @@ namespace AssemblyCSharp
 			return requestDic;
 		}
 
+		public static T Read<T>(string json){
+			return JsonReader.Deserialize<T> (json);
+		}
+
 //
 //		// utf-8 인코딩
 //		byte [] bytesForEncoding = Encoding.UTF8.GetBytes ( 인코딩 할 유니코드 string 변수 ) ;

@@ -51,14 +51,14 @@ public class CBCouponsGUI : CBBaseUI {
 	public void OnGUI()
 	{
 		GUILayout.BeginArea(MainAreaRect);
-		GUILayout.BeginVertical();
-		//				drawTable (1, _headerString.Length, _headerString);
-		drawTitleRow(titleData:_headerString);
-		if( ResultDicData!= null)
-			drawTable (ResultDicData.Length, _headerString.Length, _headerString, ResultDicData);
+			GUILayout.BeginVertical();
+			//				drawTable (1, _headerString.Length, _headerString);
+			drawTitleRow(titleData:_headerString);
+			if( ResultDicData!= null)
+				drawTable (ResultDicData.Length, _headerString.Length, _headerString, ResultDicData);
 
-		RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Height (300));
-		GUILayout.EndVertical();
+			RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Height (300));
+			GUILayout.EndVertical();
 		GUILayout.EndArea ();
 
 	}
