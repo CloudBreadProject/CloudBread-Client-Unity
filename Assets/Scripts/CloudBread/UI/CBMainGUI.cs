@@ -74,17 +74,7 @@ public class CBMainGUI : CBBaseUI
 
 		yield return www;
 
-
-		// utf-8 인코딩
-		byte [] bytesForEncoding = Encoding.UTF8.GetBytes ( www.text ) ;
-		string encodedString = Convert.ToBase64String (bytesForEncoding );
-
-		// utf-8 디코딩
-		byte[] decodedBytes = Convert.FromBase64String (encodedString );
-		string decodedString = Encoding.UTF8.GetString (decodedBytes );
-
-		print (decodedString);
-		RequestResultJson = decodedString;
+		RequestResultJson = www.text;
 
 		www.Dispose();
 	}
