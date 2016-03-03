@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using JsonFx.Json;
@@ -17,6 +18,34 @@ namespace AssemblyCSharp
 
 		public static string Write(Dictionary<string, object> obj){
 			return JsonWriter.Serialize (obj);
+		}
+
+		public static string WritePretty(Dictionary<string,object>[] obj){
+
+			JsonWriterSettings settings = new JsonWriterSettings();
+			settings.PrettyPrint = true;
+			JsonFx.Json.JsonDataWriter writer = new JsonDataWriter(settings);
+
+			StringWriter wr = new StringWriter();
+			writer.Serialize(wr, obj);
+
+			string json = wr.ToString();
+
+			return json;
+		}
+
+		public static string WritePretty(object obj){
+
+			JsonWriterSettings settings = new JsonWriterSettings();
+			settings.PrettyPrint = true;
+			JsonFx.Json.JsonDataWriter writer = new JsonDataWriter(settings);
+
+			StringWriter wr = new StringWriter();
+			writer.Serialize(wr, obj);
+
+			string json = wr.ToString();
+
+			return json;
 		}
 
 		public static Dictionary<string, object> Read(string json){

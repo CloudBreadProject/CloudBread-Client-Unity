@@ -21,9 +21,20 @@ public class CBUserInfoUI : CBBaseUI {
 	void Start () {
 		cloudbread = new CloudBreadAzure (ServerAddress);
 		cloudbread.CBSelLoginInfo (CallBack);
+
+		var header = cloudbread.CBSelLoginInfoHeaderDIc;
+		var jsonStr = JsonParser.WritePretty (header);
+		requestJson = jsonStr;
+
 //		CBSelLoginInfoController api = new CBSelLoginInfoController(ServerAddress, SelLoginInfo_Success, SelLoginInfo_Error);
 
 	}
+
+//	public void CallBack(string jsonString, Dictionary<string, object>[] jsonRequestData){
+//		print ("call back methods");
+//		ResultDicData = jsonRequestData;
+//		RequestResultJson = jsonString;
+//	}
 
 	private void SelLoginInfo_Success(string id, WWW www){
 		Debug.Log ("[SelLoginInfo_Success]" + www.text);
@@ -42,84 +53,118 @@ public class CBUserInfoUI : CBBaseUI {
 ////		print ("call back methods");
 //	}
 
-	private string [] _headerString = {
-		"memberID",
-		"memberPWD",
-		"emailAddress",
-		"emailConfirmedYN",
-		"phoneNumber1",
-		"name1"
-	};
 
-//	public void OnGUI()
-//	{
-//		GUILayout.BeginArea(MainAreaRect);
-//			GUILayout.BeginVertical();
-//				drawTitleRow(titleData:_headerString);
-//				if( ResultDicData!= null)
-//					drawTablewithButton (ResultDicData.Length, _headerString.Length, _headerString, ResultDicData);
-//
-//					RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Height (300));
-//			GUILayout.EndVertical();
-//		GUILayout.EndArea ();
-//
-//	}
+	private string requestJson = "";
+	private string responseJson = "";
 
-	public void OnGUI()
-	{
-		GUILayout.BeginArea(MainAreaRect);
-		scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Width(MainAreaRect.width), GUILayout.Height(MainAreaRect.height));
-			GUILayout.BeginVertical();
-				if (ResultDicData != null) {
-//					List<string> headers = new List<string>( ResultDicData[0].Keys);
-//					drawTitleRow(titleData:headers);
-					drawTablewithButtonUserInfo (ResultDicData.Length,  ResultDicData, "memberID");
-				}
+	Vector2 scrollPosition2;
+	private bool modifyClickedBool = false;
 
-				RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Height (300));
-			GUILayout.EndVertical();
-		GUILayout.EndScrollView ();
-		GUILayout.EndArea ();
-
-	}
-
+	private string requestJson_modify = "";
+	private string responseJson_modify = "";
 
 	public override void ModifyButtonClicked(int row, Dictionary<string, object> rawDicData){
 		print ("" + row + " 번째 User Clicked");
 
-		cloudbread.CBCOMUdtMember (rawDicData, CallBack);
+		cloudbread.CBCOMUdtMember (rawDicData, CallBack_UdtMember);
+		var headerDic = cloudbread.CBCOMUdtMemberHeaderDic;
+		requestJson_modify = JsonParser.WritePretty (headerDic);
 	}
 
-	public void CallBack2(string jsonString, Dictionary<string, object>[] jsonRequestData){
-		print ("call back methods");
-//		ResultDicData = jsonRequestData;
-		//		print ("call back methods");
+	private void CallBack_UdtMember(string JsonStr, Dictionary<string,object>[] JsonData){
+		responseJson_modify = JsonStr;
 	}
 
-	private void drawTablewithButtonUserInfo(int row, Dictionary<string, object>[] data, string PrimaryKey){
-		List<string> headerDatas = new List<string>( ResultDicData[0].Keys);
-		drawTitleRow (headerDatas);
-
-		GUILayout.BeginVertical ("box");
-		for (int j = 0; j < row; j++) {
+	public void OnGUI()
+	{
+		GUILayout.BeginArea(MainAreaRect);
+		GUILayout.BeginHorizontal ();
+		scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Width(600), GUILayout.Height(MainAreaRect.height));
+		GUILayout.BeginVertical ();
 			GUILayout.BeginHorizontal ("box");
-			Dictionary<string,object> dic = data [j];
-			for (int i = 0; i < headerDatas.Count; i++) {
-				string key = headerDatas [i];
-				if(!key.Equals(PrimaryKey)){
-					dic[key] = GUILayout.TextField ((string)dic[key], GUILayout.Width (100));
-				}else
-					GUILayout.Label ((string)dic[key], GUILayout.Width (100));
-			}
-			if (GUILayout.Button ("수 정", GUILayout.Width (80))) {
-				ModifyButtonClicked (j, dic);
-			}
-
+				GUILayout.Label ("Server Address : ");
+				GUILayout.TextField (ServerAddress + "api/CBSelLoginInfo");
 			GUILayout.EndHorizontal ();
-		}
-		GUILayout.EndVertical ();
-	}
 
+			GUILayout.BeginHorizontal();
+				
+				GUILayout.BeginVertical ();
+					GUILayout.Label ("Request Json Data");
+					requestJson = GUILayout.TextArea (requestJson);
+					GUILayout.Label ("");
+					GUILayout.Label ("Response Json Data : ");
+					RequestResultJson = GUILayout.TextArea (RequestResultJson);
+				GUILayout.EndVertical ();
+				drawTablewithButtonUserInfo(ResultDicData, "memberID");
+				
+		GUILayout.EndHorizontal();
+		GUILayout.EndVertical ();
+		GUILayout.EndScrollView ();
+
+		if (modifyClickedBool) {
+			scrollPosition2 = GUILayout.BeginScrollView(scrollPosition2, GUILayout.Width(600), GUILayout.Height(MainAreaRect.height));
+			GUILayout.BeginVertical ();
+			GUILayout.BeginHorizontal ("box");
+				GUILayout.Label ("Server Address : ");
+				GUILayout.TextField (ServerAddress + "api/CBCOMUdtMember");
+			GUILayout.EndHorizontal ();
+
+			GUILayout.BeginHorizontal();
+
+				GUILayout.BeginVertical ();
+					GUILayout.Label ("Request Json Data");
+					requestJson_modify = GUILayout.TextArea (requestJson_modify);
+					GUILayout.Label ("");
+					GUILayout.Label ("Response Json Data : ");
+					responseJson_modify = GUILayout.TextArea (responseJson_modify);
+				GUILayout.EndVertical ();
+//				drawTablewithButtonUserInfo(ResultDicData, "memberID");
+
+			GUILayout.EndHorizontal();
+			GUILayout.EndVertical ();
+			GUILayout.EndScrollView ();
+		}
+		GUILayout.EndHorizontal ();
+		GUILayout.EndArea ();
+
+	}
+		
+
+
+	// 세로 테이블
+	private void drawTablewithButtonUserInfo(Dictionary<string,object>[] data, string primarykey){
+		if (data != null) {
+			List<string> headerDatas = new List<string> (data [0].Keys);
+
+			GUILayout.BeginVertical ("box");
+			for (int i = 0; i < headerDatas.Count; i++) {
+				GUILayout.BeginHorizontal ();
+				var headerKey = headerDatas [i];
+				GUILayout.Label(headerKey, GUILayout.Width(150));
+				for (int j = 0; j < data.Length; j++) {
+					var dataDic = data [j];
+					if (headerKey.Equals (primarykey)) 
+						GUILayout.Label ((string)dataDic [headerKey], GUILayout.Width (120));
+					else
+						data[j][headerKey] = GUILayout.TextField ((string) dataDic [headerKey], GUILayout.Width (120));
+				}
+				GUILayout.EndHorizontal ();
+
+			}
+
+			GUILayout.BeginHorizontal ("box");
+				GUILayout.Label ("", GUILayout.Width (145));
+				for (int j = 0; j < data.Length; j++) {
+					if (GUILayout.Button ("수 정", GUILayout.Width(120))) {
+						modifyClickedBool = true;
+						ModifyButtonClicked(j, data[j]);
+					}
+				}
+			GUILayout.EndHorizontal ();
+			GUILayout.EndVertical ();
+
+		}
+	}
 
 
 }

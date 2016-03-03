@@ -40,6 +40,7 @@ namespace AssemblyCSharp
 
 		}
 
+		public Dictionary<string,object> CBSelLoginInfoHeaderDIc;
 		// POST api/CBSelLoginInfo
 		public void CBSelLoginInfo(Action<string, Dictionary<string,object>[]> callback){
 			string ServerEndPoint = ServerAddress + "api/CBSelLoginInfo";
@@ -58,7 +59,7 @@ namespace AssemblyCSharp
 			JsonDic.Add ("LastDeviceID", "LastDeviceID");
 			JsonDic.Add ("LastIPaddress", "LastIPaddress");
 			JsonDic.Add ("LastMACAddress", "LastMACAddress");
-
+			CBSelLoginInfoHeaderDIc = JsonDic;
 
 			helper.POST (2, ServerEndPoint, JsonDic);
 
@@ -80,12 +81,25 @@ namespace AssemblyCSharp
 
 				string RequestJsonString = enc.GetString(Encoding.UTF8.GetBytes(www.text));
 
-				var ResultDicData = (Dictionary<string, object>[]) JsonParser.Read2Object(RequestJsonString);
+				Dictionary<string, object>[] ResultDicData;
+
+				try{
+					ResultDicData = (Dictionary<string, object>[]) JsonParser.Read2Object(RequestJsonString);
+
+				}
+				catch{
+					ResultDicData = new Dictionary<string, object>[1];
+					ResultDicData[0] = new Dictionary<string,object> ();
+					ResultDicData[0].Add ("Error", "JsonParsing Error");
+				}
+
 				_requestCallback (RequestJsonString, ResultDicData);
+
 
 			}
 		}
 
+		public Dictionary<string,object> CBCOMUdtMemberHeaderDic;
 		// POST api/CBCOMUdtMember
 		public void CBCOMUdtMember(Dictionary<string, object> updateItem, Action<string, Dictionary<string, object>[]> callback){
 			string ServerEndPoint = ServerAddress + "api/CBCOMUdtMember";
@@ -94,6 +108,7 @@ namespace AssemblyCSharp
 			helper.OnHttpRequest += OnHttpRequest;
 
 			updateItem.Add ("TimeZoneID", "Korea Standard Time");
+			CBCOMUdtMemberHeaderDic = updateItem;
 
 			helper.POST (2, ServerEndPoint, updateItem);
 
@@ -179,6 +194,8 @@ namespace AssemblyCSharp
 		 * 
 		 * Item
 		 */
+
+		public Dictionary<string, object> CBSelItemListAllHeader;
 		// POST api/CBSelItemListAll
 		public void CBSelItemListAll(Action<string, Dictionary<string,object>[]> callback){
 			string ServerEndPoint = ServerAddress + "api/CBSelItemListAll";
@@ -198,6 +215,7 @@ namespace AssemblyCSharp
 			jsonDic.Add ("memberID", "aaa");
 			jsonDic.Add ("page", "1");
 			jsonDic.Add ("pageSize", "5");
+			CBSelItemListAllHeader = jsonDic;
 
 			helper.POST (3, ServerEndPoint, jsonDic);
 

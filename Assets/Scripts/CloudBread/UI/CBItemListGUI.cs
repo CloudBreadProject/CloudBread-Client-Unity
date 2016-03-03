@@ -22,6 +22,8 @@ public class CBItemListGUI : CBBaseUI {
 	void Start () {
 		cloudbread = new CloudBreadAzure(ServerAddress);
 		cloudbread.CBSelItemListAll(CallBack);
+		var header = cloudbread.CBSelItemListAllHeader;
+		CBSelItemListReqeustJson = JsonParser.WritePretty (header);
 
 	}
 	
@@ -31,6 +33,7 @@ public class CBItemListGUI : CBBaseUI {
 	}
 
 	private CloudBreadAzure cloudbread;
+	public string CBSelItemListReqeustJson = "";
 
 //	private string [] _headerString = {"rownum", "itemListID", "itemName", "itemDescription", "itemPrice", "itemSellPrice", "itemCategory1"};
 
@@ -40,41 +43,24 @@ public class CBItemListGUI : CBBaseUI {
 		GUILayout.BeginArea(MainAreaRect);
 		scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Width(MainAreaRect.width), GUILayout.Height(MainAreaRect.height));
 			GUILayout.BeginVertical();
+				GUILayout.BeginHorizontal ();
+		GUILayout.Label ("Server Address : " , GUILayout.Width(80));
+					GUILayout.TextField (ServerAddress + "api/CBSelItemListAll");
+				GUILayout.EndHorizontal ();
+				GUILayout.Label ("");
+				GUILayout.Label ("Request Json : ");
+				CBSelItemListReqeustJson = GUILayout.TextArea (CBSelItemListReqeustJson);
+				GUILayout.Label ("");
 				if( ResultDicData!= null)
-					drawTablewithButton2 (ResultDicData.Length, ResultDicData, "memberID");
-
-				RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Height (300));
+//					drawTablewithButton2 (ResultDicData.Length, ResultDicData, "memberID");
+					drawTablewithButtonItemList(ResultDicData, "");
+				GUILayout.Label ("");
+				GUILayout.Label ("Response Json : ");
+				RequestResultJson = GUILayout.TextArea (RequestResultJson);
 			GUILayout.EndVertical();
 		GUILayout.EndScrollView ();
 		GUILayout.EndArea ();
 
-	}
-
-	private void drawTablewithButton2(int row, Dictionary<string, object>[] data, string PrimaryKey){
-		List<string> headerDatas = new List<string>( ResultDicData[0].Keys);
-		drawTitleRow (headerDatas);
-
-		GUILayout.BeginVertical ("box");
-		for (int j = 0; j < row; j++) {
-			GUILayout.BeginHorizontal ("box");
-			Dictionary<string,object> dic = data [j];
-			for (int i = 0; i < headerDatas.Count; i++) {
-				string key = headerDatas [i];
-//				if(!key.Equals("PrimaryKey")){
-//					dic[key] = GUILayout.TextField ((string)dic[key], GUILayout.Width (100));
-//				}else
-					GUILayout.Label ((string)dic[key], GUILayout.Width (100));
-			}
-//			if (GUILayout.Button ("수 정", GUILayout.Width (80))) {
-//				ModifyButtonClicked (j, dic);
-//			}
-			if (GUILayout.Button ("조 회", GUILayout.Width (80))) {
-				DetailButtonClicked (j, dic);
-			}
-
-			GUILayout.EndHorizontal ();
-		}
-		GUILayout.EndVertical ();
 	}
 
 //	private void 
@@ -85,6 +71,46 @@ public class CBItemListGUI : CBBaseUI {
 
 	public void DetailButtonClicked(int row, Dictionary<string, object> rawDicData){
 		cloudbread.CBComSelItemList1(rawDicData["itemListID"].ToString(), CallBack);
+	}
+
+	// 세로 테이블
+	private void drawTablewithButtonItemList(Dictionary<string,object>[] data, string primarykey){
+		if (data != null) {
+			List<string> headerDatas = new List<string> (data [0].Keys);
+
+			GUILayout.BeginVertical ("box");
+			for (int i = 0; i < headerDatas.Count; i++) {
+				GUILayout.BeginHorizontal ();
+				var headerKey = headerDatas [i];
+				GUILayout.Label(headerKey, GUILayout.Width(150));
+				for (int j = 0; j < data.Length; j++) {
+					var dataDic = data [j];
+					if (headerKey.Equals (primarykey)) 
+						GUILayout.Label ((string)dataDic [headerKey], GUILayout.Width (120));
+					else
+						data[j][headerKey] = GUILayout.TextField ((string) dataDic [headerKey], GUILayout.Width (120));
+				}
+				GUILayout.EndHorizontal ();
+
+			}
+
+			GUILayout.BeginHorizontal ("box");
+			GUILayout.Label ("", GUILayout.Width (145));
+			for (int j = 0; j < data.Length; j++) {
+				GUILayout.BeginVertical ();
+					if (GUILayout.Button ("수 정", GUILayout.Width(120))) {
+	//					modifyClickedBool = true;
+						ModifyButtonClicked(j, data[j]);
+					}
+					if (GUILayout.Button ("Delete", GUILayout.Width (120))) {
+						DetailButtonClicked (j, data [j]);
+					}
+				GUILayout.EndVertical ();
+			}
+			GUILayout.EndHorizontal ();
+			GUILayout.EndVertical ();
+
+		}
 	}
 }
 /*

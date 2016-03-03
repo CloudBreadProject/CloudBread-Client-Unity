@@ -25,7 +25,7 @@ public class CBBaseUI : MonoBehaviour {
 	public string ServerEndPoint;
 	public string ServerAddress;
 
-	public Rect MainAreaRect = new Rect (0, 150, Screen.width - 120, 600);
+	public Rect MainAreaRect = new Rect (0, 150, Screen.width - 120, Screen.height -150);
 	public Vector2 scrollPosition;
 
 
@@ -43,7 +43,9 @@ public class CBBaseUI : MonoBehaviour {
 			Debug.Log (www.text);
 
 			RequestResultJson = www.text;
+			
 			ResultDicData = (Dictionary<string, object>[]) JsonParser.Read2Object(www.text);
+			RequestResultJson = JsonParser.WritePretty (ResultDicData);
 		}
 	}
 
@@ -160,7 +162,7 @@ public class CBBaseUI : MonoBehaviour {
 	public void CallBack(string jsonString, Dictionary<string, object>[] jsonRequestData){
 		print ("call back methods");
 		ResultDicData = jsonRequestData;
-		RequestResultJson = jsonString;
-		//		print ("call back methods");
+		RequestResultJson = JsonParser.WritePretty (jsonRequestData);
+//		RequestResultJson = jsonString;
 	}
 }

@@ -5,9 +5,8 @@ using JsonFx;
 
 public class CloudBreadTestUI : MonoBehaviour {
 	
-//	private string ServerAddress = "https://dw-cloudbread2.azurewebsites.net/";
-	private string ServerAddress = "https://yscloudbreadmobile.azurewebsites.net/";
-	public string AuthKey = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaWQ6YzZhZTNhOTQ3NTdiMDM3N2Y5OTgyZmQwODJhZWVhMmMiLCJpZHAiOiJmYWNlYm9vayIsInZlciI6IjMiLCJpc3MiOiJodHRwczovL2R3LWNsb3VkYnJlYWQteXMuYXp1cmV3ZWJzaXRlcy5uZXQvIiwiYXVkIjoiaHR0cHM6Ly9kdy1jbG91ZGJyZWFkLXlzLmF6dXJld2Vic2l0ZXMubmV0LyIsImV4cCI6MTQ1NjE1MDkxNywibmJmIjoxNDU2MTQ3MzE3fQ.YqE2gLZVAX-Q_97DydrFKRKWPSsxxncIWIqNs0xrIiE";
+	private string ServerAddress = "https://dw-cloudbread2.azurewebsites.net/";
+//	private string ServerAddress = "https://yscloudbreadmobile.azurewebsites.net/";
 
 
 	private enum TESTPAGE {main, login, authentication, userInfo, memberGameInfo, itemList, userItem, gameStage, notice, events, coupons};
