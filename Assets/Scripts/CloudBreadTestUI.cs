@@ -9,7 +9,7 @@ public class CloudBreadTestUI : MonoBehaviour {
 //	private string ServerAddress = "https://yscloudbreadmobile.azurewebsites.net/";
 
 
-	private enum TESTPAGE {main, login, authentication, userInfo, memberGameInfo, itemList, userItem, gameStage, notice, events, coupons};
+	private enum TESTPAGE {main, login, authentication, userInfo, memberGameInfo, itemList, userItem, gameStage, notice, events, coupons, socket};
 
 	private string jsonAreaString = "Json Area";
 	private string jsonAreaInitString = "Json Area";
@@ -97,6 +97,11 @@ public class CloudBreadTestUI : MonoBehaviour {
 			if (GUILayout.Button ("쿠폰", GUILayout.Height(50))) {
 				print ("Coupons Page");
 				PresentationView (TESTPAGE.coupons);
+				jsonAreaString = jsonAreaInitString;
+			}
+			if (GUILayout.Button ("Socket 채팅", GUILayout.Height (50))) {
+				print ("Socket Page");
+				PresentationView (TESTPAGE.socket);
 				jsonAreaString = jsonAreaInitString;
 			}
 			GUILayout.EndVertical();
@@ -209,6 +214,10 @@ public class CloudBreadTestUI : MonoBehaviour {
 			break;
 		case TESTPAGE.coupons:
 			ui = MainContainer.AddComponent(typeof(CBCouponsGUI)) as CBBaseUI;
+			ui.enabled = true;
+			break;
+		case TESTPAGE.socket:
+			ui = MainContainer.AddComponent (typeof(CBSocketGUI)) as CBBaseUI;
 			ui.enabled = true;
 			break;
 		default:
