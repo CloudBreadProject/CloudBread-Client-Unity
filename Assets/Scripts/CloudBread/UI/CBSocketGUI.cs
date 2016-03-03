@@ -1,14 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using SocketIO;
 
 public class CBSocketGUI : CBBaseUI {
+	SocketIOComponent socket;
 
 	// Use this for initialization
 	void Start () {
 		_chattingAreaRect = new Rect (MainAreaRect.width/2 - (500/2), MainAreaRect.y, 500, MainAreaRect.height);
 		for(int i = 0 ; i<100; i++)
 			addChattingList (new ChattingMessage{ userName = "홍 윤 석", content = "aadfjfdjif"});
+		GameObject go = GameObject.Find ("SocketIO");
+		this.socket = go.GetComponent<SocketIOComponent> ();
+		this.socket.On("authorized", (SocketIOEvent obj) => {
+			print (obj.ToString());
+		});
+		this.socket.On ("channel connected", (SocketIOEvent obj) => {
+			print (obj.ToString());
+		});
 	}
 
 	// Chatting Data Class
@@ -24,6 +34,22 @@ public class CBSocketGUI : CBBaseUI {
 		addChattingList (new ChattingMessage{ userName = userName, content = Message});
 		scrollPosition.y = Mathf.Infinity;
 
+		Dictionary<string, string> user = new Dictionary<string, string> ();
+		user ["username"] = this.userName;
+		this.socket.Emit ("authenticate user", new JSONObject(user));
+	}
+
+	private void UserSendBtnClicked(){
+		Dictionary<string, string> user = new Dictionary<string, string> ();
+		user ["username"] = this.userName;
+		this.socket.Emit ("authenticate user", new JSONObject(user));
+	}
+
+	private void ChannalSendBtnClicked(){
+		Dictionary<string, string> channel = new Dictionary<string, string> ();
+		channel ["link"] = this.channelName;
+
+		this.socket.Emit ("join channel", new JSONObject(channel));
 	}
 
 	// add Chatting message in Chatting window
@@ -45,17 +71,20 @@ public class CBSocketGUI : CBBaseUI {
 	{
 		GUILayout.BeginArea(_chattingAreaRect);
 		GUILayout.BeginVertical ();
-			GUILayout.BeginHorizontal ("box");
-				GUILayout.Label ("Server Address : ", GUILayout.Width(100));
-				serverAddress = GUILayout.TextField (serverAddress);
-			GUILayout.EndHorizontal ();
+			// @TODO remove after authenticated
 			GUILayout.BeginHorizontal ("box");
 				GUILayout.Label ("User Name : ", GUILayout.Width(100));
 				userName = GUILayout.TextField (userName);
+				if(GUILayout.Button("SEND", GUILayout.Width(80))){
+					UserSendBtnClicked();
+				}
 			GUILayout.EndHorizontal ();
 			GUILayout.BeginHorizontal ("box");
 				GUILayout.Label ("Channel Name : ", GUILayout.Width(100));
 				channelName = GUILayout.TextField (channelName);
+				if(GUILayout.Button("SEND", GUILayout.Width(80))){
+					ChannalSendBtnClicked();
+				}
 			GUILayout.EndHorizontal ();
 
 			GUILayout.Label ("");
