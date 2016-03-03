@@ -89,7 +89,7 @@ public class CBLoginUI : CBBaseUI {
 	}
 
 	public void Login_error(string id, WWW www){
-		RequestResultJson = "[Error] : " + www.text;
+		RequestResultJson = "[Error] : " + www.error;
 
 	}
 

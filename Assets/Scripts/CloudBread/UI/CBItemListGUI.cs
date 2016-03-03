@@ -35,9 +35,6 @@ public class CBItemListGUI : CBBaseUI {
 	private CloudBreadAzure cloudbread;
 	public string CBSelItemListReqeustJson = "";
 
-//	private string [] _headerString = {"rownum", "itemListID", "itemName", "itemDescription", "itemPrice", "itemSellPrice", "itemCategory1"};
-
-
 	public void OnGUI()
 	{
 		GUILayout.BeginArea(MainAreaRect);
@@ -63,7 +60,6 @@ public class CBItemListGUI : CBBaseUI {
 
 	}
 
-//	private void 
 	public override void ModifyButtonClicked(int row, Dictionary<string, object> rawDicData){
 		cloudbread.CBComUdtItemList1(rawDicData, CallBack);
 

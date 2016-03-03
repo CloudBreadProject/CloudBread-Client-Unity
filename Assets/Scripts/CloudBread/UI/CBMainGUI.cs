@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using AssemblyCSharp;
+using System.Text;
 
 public class CBMainGUI : CBBaseUI
 {
@@ -25,6 +26,10 @@ public class CBMainGUI : CBBaseUI
 		ZUMO-API-VERSION:2.0.0
 		User-Agent:ZUMO/2.0 (lang=Managed; os=Windows Store; os_version=--; arch=X86; version=2.0.31217.0)
 		Content-Type:application/json
+
+		Accept-Encoding: gzip, deflate, sdch
+		Accept-Language: ko-KR,ko;q=0.8,en-US;q=0.6,en;q=0.4
+
 	 *
 	 */
 
@@ -32,12 +37,13 @@ public class CBMainGUI : CBBaseUI
 		var serverEndPoint = ServerAddress + PathString;
 
 		Dictionary<string, string> Header = new Dictionary<string, string> ();
-		Header.Add("Accept-Encoding", "gzip");
+//		Header.Add("Accept-Encoding", "gzip, deflate, sdch");
+
 		Header.Add ("Accept", "application/json");
 		Header.Add ("X-ZUMO-VERSION", "ZUMO/2.0 (lang=Managed; os=Windows Store; os_version=--; arch=X86; version=2.0.31217.0)");
 		Header.Add ("X-ZUMO-FEATURES", "AJ");
 		Header.Add ("ZUMO-API-VERSION", "2.0.0");
-		Header.Add ("User-Agent","ZUMO/2.0 (lang=Managed; os=Windows Store; os_version=--; arch=X86; version=2.0.31217.0)");
+//		Header.Add ("User-Agent","ZUMO/2.0 (lang=Managed; os=Windows Store; os_version=--; arch=X86; version=2.0.31217.0)");
 		Header.Add ("Content-Type", "application/json");
 
 
@@ -49,12 +55,12 @@ public class CBMainGUI : CBBaseUI
 		var serverEndPoint = ServerAddress + PathString;
 
 		Dictionary<string, string> Header = new Dictionary<string, string> ();
-		Header.Add("Accept-Encoding", "gzip");
+//		Header.Add("Accept-Encoding", "gzip");
 		Header.Add ("Accept", "application/json");
 		Header.Add ("X-ZUMO-VERSION", "ZUMO/2.0 (lang=Managed; os=Windows Store; os_version=--; arch=X86; version=2.0.31217.0)");
 		Header.Add ("X-ZUMO-FEATURES", "AJ");
 		Header.Add ("ZUMO-API-VERSION", "2.0.0");
-		Header.Add ("User-Agent","ZUMO/2.0 (lang=Managed; os=Windows Store; os_version=--; arch=X86; version=2.0.31217.0)");
+//		Header.Add ("User-Agent","ZUMO/2.0 (lang=Managed; os=Windows Store; os_version=--; arch=X86; version=2.0.31217.0)");
 		Header.Add ("Content-Type", "application/json");
 		if(AzureMobileAppRequestHelper.AuthToken!= null)
 			Header.Add ("x-zumo-auth", AzureMobileAppRequestHelper.AuthToken);
@@ -68,7 +74,17 @@ public class CBMainGUI : CBBaseUI
 
 		yield return www;
 
-		RequestResultJson = www.text;
+
+		// utf-8 인코딩
+		byte [] bytesForEncoding = Encoding.UTF8.GetBytes ( www.text ) ;
+		string encodedString = Convert.ToBase64String (bytesForEncoding );
+
+		// utf-8 디코딩
+		byte[] decodedBytes = Convert.FromBase64String (encodedString );
+		string decodedString = Encoding.UTF8.GetString (decodedBytes );
+
+		print (decodedString);
+		RequestResultJson = decodedString;
 
 		www.Dispose();
 	}
@@ -95,7 +111,9 @@ public class CBMainGUI : CBBaseUI
 					GUILayout.EndHorizontal ();
 					GUILayout.Label ("");
 					GUILayout.Label ("결 과 : ");
-					RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Width(contentWidth), GUILayout.Height(300));
+					
+		RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Width(contentWidth), GUILayout.Height(300));
+//		GUILayout			
 			GUILayout.EndVertical ();
 		GUILayout.EndArea ();
 	}

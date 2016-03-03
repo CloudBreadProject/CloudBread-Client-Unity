@@ -58,7 +58,16 @@ public class WWWHelper : MonoBehaviour {
 		}
 
 		string jsonString = JsonParser.Write (JsonData);
-		byte[] jsonByte = Encoding.UTF8.GetBytes(jsonString.ToCharArray());
+
+		// utf-8 인코딩
+		byte [] bytesForEncoding = Encoding.UTF8.GetBytes ( jsonString ) ;
+		string encodedString = Convert.ToBase64String (bytesForEncoding );
+
+		// utf-8 디코딩
+		byte[] decodedBytes = Convert.FromBase64String (encodedString );
+		string decodedString = Encoding.UTF8.GetString (decodedBytes );
+
+		byte[] jsonByte = Encoding.UTF8.GetBytes(decodedString);
 
 		WWW www = new WWW(url, jsonByte, HeaderDic);
 		StartCoroutine(WaitForRequest("" + id, www));
@@ -82,7 +91,7 @@ public class WWWHelper : MonoBehaviour {
 
 		yield return www;
 
-
+		
 		bool hasCompleteListener = (OnHttpRequest != null);
 
 		if (hasCompleteListener) {

@@ -67,7 +67,7 @@ namespace AssemblyCSharp
 
 		}
 
-		// POST api/CBSelLoginInfo request
+
 		public void OnHttpRequest(string id, WWW www) {
 			WWWHelper helper = WWWHelper.Instance;
 			helper.OnHttpRequest -= OnHttpRequest;
@@ -77,9 +77,21 @@ namespace AssemblyCSharp
 			} else {
 				Debug.Log (www.text);
 
-				Encoding enc = Encoding.GetEncoding("euc-kr");
+//				Encoding enc = Encoding.GetEncoding("euc-kr");
+//
+//				string RequestJsonString = enc.GetString(Encoding.UTF8.GetBytes(www.text));
 
-				string RequestJsonString = enc.GetString(Encoding.UTF8.GetBytes(www.text));
+//				// utf-8 인코딩
+//				byte [] bytesForEncoding = Encoding.UTF8.GetBytes ( www.text ) ;
+//				string encodedString = Convert.ToBase64String (bytesForEncoding );
+//
+//				// utf-8 디코딩
+//				byte[] decodedBytes = Convert.FromBase64String (encodedString );
+//				string decodedString = Encoding.UTF8.GetString (decodedBytes );
+
+//				print (decodedString);
+
+				var RequestJsonString = www.text;
 
 				Dictionary<string, object>[] ResultDicData;
 
