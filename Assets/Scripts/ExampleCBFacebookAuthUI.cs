@@ -8,7 +8,7 @@ public class ExampleCBFacebookAuthUI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		_contentAreaRect = new Rect (Screen.width/2 - (_contentWidth/2), 50, _contentWidth, Screen.height - 50);
+		_contentAreaRect = new Rect (Screen.width/2 - (_contentWidth/2), 10, _contentWidth, Screen.height - 50);
 	}
 
 	private string ServerAddress = "https://<Your Address>.azurewebsites.net/";

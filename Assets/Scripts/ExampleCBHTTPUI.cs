@@ -7,7 +7,7 @@ public class ExampleCBHTTPUI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		_contentAreaRect = new Rect (Screen.width/2 - _contentWidth / 2, Screen.height/2 - _contentHeight / 2, _contentWidth, _contentHeight);
+		_contentAreaRect = new Rect (Screen.width/2 - _contentWidth / 2, 10, _contentWidth, _contentHeight);
 	}
 
 	private string ServerAddress = "https://<Your Address>.azurewebsites.net/";
