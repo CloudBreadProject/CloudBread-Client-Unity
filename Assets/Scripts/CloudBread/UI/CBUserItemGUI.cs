@@ -19,7 +19,6 @@ public class CBUserItemGUI : CBBaseUI {
 	// Use this for initialization
 	void Start () {
 		cloudbread = new CloudBreadAzure(ServerAddress);
-
 		cloudbread.CBSelMemberItems(CallBack);
 	}
 	
@@ -29,14 +28,6 @@ public class CBUserItemGUI : CBBaseUI {
 	}
 
 	CloudBreadAzure cloudbread;
-
-//	private string[] _headerString = {
-//		"rownum",
-//		"itemListsItemName",
-//		"itemListsItemDescription",
-//		"itemListsItemPrice",
-//		"itemListsItemSellPrice"
-//	};
 		
 	public void OnGUI()
 	{
@@ -83,7 +74,6 @@ public class CBUserItemGUI : CBBaseUI {
 	}
 
 	public override void ModifyButtonClicked(int row, Dictionary<string, object> rawDicData){
-		cloudbread.CBComUdtItemList1(rawDicData, CallBack);
 
 	}
 

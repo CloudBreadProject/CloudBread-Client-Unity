@@ -15,7 +15,7 @@ namespace AssemblyCSharp
 
 		public string ServerAddress = "";
 
-		private AzureMobileAppRequestHelper requestHelper;
+//		private AzureMobileAppRequestHelper requestHelper;
 
 		public void getLoginInfoData(){
 //			CBSelLoginInfoController controller = new CBSelLoginInfoController(serverAddress,
@@ -260,46 +260,7 @@ namespace AssemblyCSharp
 			_requestCallback = callback;
 		}
 
-		/*
-		 * 개별 아이템 목록 수정
-		 */
-		// POST api/CBComUdtItemList1
-		public void CBComUdtItemList1(Dictionary<string, object> updateData, Action<string, Dictionary<string, object>[]> callback){
-			var ServerEndPoint = ServerAddress + "api/CBComUdtItemList1";
 
-			WWWHelper helper = WWWHelper.Instance;
-			helper.OnHttpRequest += OnHttpRequest;
-
-			/*
-			 * {
-				  "memberID": "aaa",
-				  "itemListID": "itemid1", // where
-				  "itemName": "ItemNameNew",
-				  "itemDescription": "ItemDescription",
-				  "itemPrice": "80",
-				  "itemSellPrice": "80",
-				  "itemCategory1": "ItemCategory1",
-				  "itemCategory2": "ItemCategory2",
-				  "itemCategory3": "ItemCategory3",
-				  "sCol1": "sCol1",
-				  "sCol2": "sCol2",
-				  "sCol3": "sCol3",
-				  "sCol4": "sCol4",
-				  "sCol5": "sCol5",
-				  "sCol6": "sCol6",
-				  "sCol7": "sCol7",
-				  "sCol8": "sCol8",
-				  "sCol9": "sCol9",
-				  "sCol10": "sCol10"
-				}
-			 */
-//			Dictionary<string, object> jsondic = new Dictionary<string, object> ();
-
-
-			helper.POST (1, ServerEndPoint, updateData);
-			_requestCallback = callback;
-
-		}
 
 		// POST api/AddUseMemberItem
 		public void AddUseMemberItem(){

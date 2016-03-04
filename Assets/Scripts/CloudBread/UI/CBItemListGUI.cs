@@ -60,11 +60,6 @@ public class CBItemListGUI : CBBaseUI {
 
 	}
 
-	public override void ModifyButtonClicked(int row, Dictionary<string, object> rawDicData){
-		cloudbread.CBComUdtItemList1(rawDicData, CallBack);
-
-	}
-
 	public void DetailButtonClicked(int row, Dictionary<string, object> rawDicData){
 		cloudbread.CBComSelItemList1(rawDicData["itemListID"].ToString(), CallBack);
 	}
@@ -94,10 +89,7 @@ public class CBItemListGUI : CBBaseUI {
 			GUILayout.Label ("", GUILayout.Width (145));
 			for (int j = 0; j < data.Length; j++) {
 				GUILayout.BeginVertical ();
-					if (GUILayout.Button ("수 정", GUILayout.Width(120))) {
-	//					modifyClickedBool = true;
-						ModifyButtonClicked(j, data[j]);
-					}
+					
 					if (GUILayout.Button ("Delete", GUILayout.Width (120))) {
 						DetailButtonClicked (j, data [j]);
 					}
