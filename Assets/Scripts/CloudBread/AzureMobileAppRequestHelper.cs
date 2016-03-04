@@ -14,8 +14,7 @@ namespace AssemblyCSharp
 		// ZUMO-API-VERSION
 		private static string _api_version = "2.0.0";
 
-//		public static AuthData auth_data;
-
+		// X-ZUMO-AUTH
 		public static string AuthToken;
 
 		private CBAuthentication cbAuth;
@@ -47,23 +46,17 @@ namespace AssemblyCSharp
 			var crypt = CBAuthentication.AES_decrypt (cbAuth.token, "1234567890123456", "1234567890123456");
 
 			Debug.Log ("[token decrypt] " + crypt);
-
-
-
 		}
 
 		public Dictionary<string, string> getDefaultHeader(){
 			var header = new Dictionary<string, string> (); 
 			header["ZUMO-API-VERSION"] = _api_version;
-
-//			header ["Accept-Encoding"] = "gzip";
 			header ["Accept"] = "application/json";
 
 			header["X-ZUMO-VERSION"] = "ZUMO/2.0 (lang=Managed; os=Windows Store; os_version=--; arch=X86; version=2.0.31217.0)";
 			header ["X-ZUMO-FEATURES"] = "AJ";
 			header ["X-ZUMO-INSTALLATION-ID"] = "fe52b710-0312-4cad-8d53-dfd28d4c6f9b";
 			header ["Content-Type"] = "application/json";
-//			header["User-Agent"] = "ZUMO/2.0 (lang=Managed; os=Windows Store; os_version=--; arch=X86; version=2.0.31217.0)";
 
 			if (AuthToken != null) {
 				header ["X-ZUMO-AUTH"] = AuthToken;

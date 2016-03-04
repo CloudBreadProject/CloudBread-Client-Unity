@@ -2,8 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using SocketIO;
+using AssemblyCSharp;
 
 public class CBSocketGUI : CBBaseUI {
+	// Socket Url
+	// ws://hbh-cloudbread-socket.azurewebsites.net/socket.io/?EIO=4&transport=websocket
 
 	SocketIOComponent socket;
 
@@ -16,9 +19,44 @@ public class CBSocketGUI : CBBaseUI {
 		this.socket.On("authorized", (SocketIOEvent obj) => {
 			print (obj.ToString());
 		});
+
 		this.socket.On ("channel connected", (SocketIOEvent obj) => {
+			_chattingChannelList.Add (channelName);
+			_chattingDic.Add (channelName, new List<ChattingMessage> ());
+			_msgTemp.Add ("");
+
 			print (obj.ToString());
 		});
+		this.socket.On ("new message", (SocketIOEvent obj) => {
+			var myData = obj.data.ToString();
+			print(myData);
+
+			var SocketData = JsonParser.Read<SocketData>(myData);
+			addChattingList (SocketData.channel.link, new ChattingMessage{ userName = SocketData.message.username , content = SocketData.message.content });
+		});
+		this.socket.On ("user joined", (SocketIOEvent obj) => {
+			var myData = obj.data.ToString();
+			print(myData);
+
+			var SocketData = JsonParser.Read<SocketData>(myData);
+			addChattingList (SocketData.channel.link, new ChattingMessage{ userName = SocketData.message.username , content = SocketData.message.username + " has connected" });
+
+		});
+	}
+
+	class SocketData{
+		public SocketAuthor message{get;set;}
+		public SocketChannel channel{get;set;}
+	}
+	class SocketAuthor{
+		public string author{get;set;}
+		public string username{get;set;}
+		public string content{get;set;}
+	}
+
+	class SocketChannel{
+		public string link{ get; set; }
+		public string allUsers { get; set; }
 	}
 
 	private void CreateChannel(){
@@ -26,10 +64,6 @@ public class CBSocketGUI : CBBaseUI {
 		channel ["link"] = channelName;
 
 		this.socket.Emit ("join channel", new JSONObject(channel));
-
-		_chattingChannelList.Add (channelName);
-		_chattingDic.Add (channelName, new List<ChattingMessage> ());
-		_msgTemp.Add ("");
 	}
 
 	// Chatting Data Class
@@ -41,12 +75,13 @@ public class CBSocketGUI : CBBaseUI {
 
 
 	// send Button Clicked
-	private void sendBtnClicked(string channelName, string Message){
-		addChattingList (channelName, new ChattingMessage{ userName = userName, content = Message});
+	private void sendBtnClicked(string channelName, string Message) {
 
-		Dictionary<string, string> user = new Dictionary<string, string> ();
-		user ["username"] = this.userName;
-		this.socket.Emit ("authenticate user", new JSONObject(user));
+		Dictionary<string, string> message = new Dictionary<string, string> ();
+		message ["username"] = this.userName;
+		message ["content"] = Message;
+		message ["link"] = channelName;
+		this.socket.Emit ("new message", new JSONObject(message));
 	}
 
 	private void UserSendBtnClicked(){
