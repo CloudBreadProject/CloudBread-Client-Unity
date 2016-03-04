@@ -38,72 +38,22 @@ public class ExampleCBMemberInfoUI : MonoBehaviour {
 
 	// @TODO Request "CBSelLoginInfo"
 	private void Request_CBSelLoginInfo(){
-		var serverEndPoint = ServerAddress + "api/CBSelLoginInfo";
-
-		Dictionary<string, string> header = AzureMobileAppRequestHelper.getHeader ();
-
-		Dictionary<string, object> requestDataDic = new Dictionary<string, object> ();
-		requestDataDic.Add ("memberID", "aaa");
-		requestDataDic.Add ("memberPWD", "MemberPWD");
-		requestDataDic.Add ("LastDeviceID", "LastDeviceID");
-		requestDataDic.Add ("LastIPaddress", "LastIPaddress");
-		requestDataDic.Add ("LastMACAddress", "LastMACAddress");
-
-		requestData_Login = JsonParser.WritePretty (requestDataDic);
-
-		string requestJsonData = JsonParser.Write (requestDataDic);
-		byte[] jsonByte = Encoding.UTF8.GetBytes(requestJsonData);
-
-		WWW www = new WWW(serverEndPoint, jsonByte, header);
-		StartCoroutine(WaitForRequest(www));
-
-		/*
-		cloudbread = new CloudBreadAzure (ServerAddress);
-		cloudbread.CBSelLoginInfo (CallBack_SelLoginInfo);
-
-		var header = cloudbread.CBSelLoginInfoHeaderDIc;
-		var jsonStr = JsonParser.WritePretty (header);
-		requestData_Login = jsonStr;
-		*/
-	}
-
-	private IEnumerator  WaitForRequest(WWW www) {
-
-		yield return www;
-
-		if (www.error != null) {
-
-			CallBack_SelLoginInfo (www.text, null);
-
-		} else {
-			Dictionary<string, object>[] ResultDicData;
-
-			ResultDicData = (Dictionary<string, object>[]) JsonParser.Read2Object(www.text);
-			CallBack_SelLoginInfo(www.text, ResultDicData);
-
-		}
-
-		www.Dispose();
+		
 	}
 
 	// @TODO Response Callback Method
 	private void CallBack_SelLoginInfo(string jsonString, Dictionary<string, object>[] jsonRequestData){
 		
-		ResultDicData = jsonRequestData;
-		responseData_Login = JsonParser.WritePretty(jsonRequestData);
 	}
 
 	// @TODO Request "CBCOMUdtMember"
 	private void Request_CBCOMUdtMember(Dictionary<string, object> rawDicData){
 		
-		cloudbread.CBCOMUdtMember (rawDicData, CallBack_UdtMember);
-		var headerDic = cloudbread.CBCOMUdtMemberHeaderDic;
-		requestData_Update = JsonParser.WritePretty (headerDic);
 	}
 
 	// @TODO Response Callback Method
 	private void CallBack_UdtMember(string JsonStr, Dictionary<string,object>[] JsonData){
-		responseData_Update = JsonStr;
+		
 	}
 		
 	private void ModifyButtonClicked(int row, Dictionary<string, object> rawDicData){
