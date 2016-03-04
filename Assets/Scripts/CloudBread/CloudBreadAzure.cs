@@ -34,7 +34,7 @@ namespace AssemblyCSharp
 		}
 
 		public void AzureLogin(Action<string, Dictionary<string, object>[]> callback){
-			string ServerEndPoint = ServerAddress + "login/";
+//			string ServerEndPoint = ServerAddress + "login/";
 
 			WWWHelper helper = WWWHelper.Instance;
 

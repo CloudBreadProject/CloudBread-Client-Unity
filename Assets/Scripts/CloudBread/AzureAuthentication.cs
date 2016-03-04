@@ -37,7 +37,7 @@ public class AzureAuthentication : MonoBehaviour {
 		Facebook = 3,
 	}
 
-	private string ServerAddress = "";
+//	private string ServerAddress = "";
 
 	private Action<string,WWW> Callback_Success;
 	private Action<string,WWW> Callback_Error;

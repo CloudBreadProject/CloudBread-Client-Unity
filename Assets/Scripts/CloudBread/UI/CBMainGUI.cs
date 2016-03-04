@@ -37,13 +37,11 @@ public class CBMainGUI : CBBaseUI
 		var serverEndPoint = ServerAddress + PathString;
 
 		Dictionary<string, string> Header = new Dictionary<string, string> ();
-//		Header.Add("Accept-Encoding", "gzip, deflate, sdch");
 
 		Header.Add ("Accept", "application/json");
 		Header.Add ("X-ZUMO-VERSION", "ZUMO/2.0 (lang=Managed; os=Windows Store; os_version=--; arch=X86; version=2.0.31217.0)");
 		Header.Add ("X-ZUMO-FEATURES", "AJ");
 		Header.Add ("ZUMO-API-VERSION", "2.0.0");
-//		Header.Add ("User-Agent","ZUMO/2.0 (lang=Managed; os=Windows Store; os_version=--; arch=X86; version=2.0.31217.0)");
 		Header.Add ("Content-Type", "application/json");
 
 
@@ -55,12 +53,10 @@ public class CBMainGUI : CBBaseUI
 		var serverEndPoint = ServerAddress + PathString;
 
 		Dictionary<string, string> Header = new Dictionary<string, string> ();
-//		Header.Add("Accept-Encoding", "gzip");
 		Header.Add ("Accept", "application/json");
 		Header.Add ("X-ZUMO-VERSION", "ZUMO/2.0 (lang=Managed; os=Windows Store; os_version=--; arch=X86; version=2.0.31217.0)");
 		Header.Add ("X-ZUMO-FEATURES", "AJ");
 		Header.Add ("ZUMO-API-VERSION", "2.0.0");
-//		Header.Add ("User-Agent","ZUMO/2.0 (lang=Managed; os=Windows Store; os_version=--; arch=X86; version=2.0.31217.0)");
 		Header.Add ("Content-Type", "application/json");
 		if(AzureMobileAppRequestHelper.AuthToken!= null)
 			Header.Add ("x-zumo-auth", AzureMobileAppRequestHelper.AuthToken);
@@ -103,7 +99,6 @@ public class CBMainGUI : CBBaseUI
 					GUILayout.Label ("결 과 : ");
 					
 		RequestResultJson = GUILayout.TextArea (RequestResultJson, GUILayout.Width(contentWidth), GUILayout.Height(300));
-//		GUILayout			
 			GUILayout.EndVertical ();
 		GUILayout.EndArea ();
 	}
