@@ -70,8 +70,11 @@ public class CBMainGUI : CBBaseUI
 
 		yield return www;
 
-		RequestResultJson = www.text;
-
+		if (www.error != null) {
+			RequestResultJson = "[Error]" + www.error;
+		}else{
+			RequestResultJson = www.text;
+		}
 		www.Dispose();
 	}
 		
