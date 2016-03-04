@@ -9,14 +9,9 @@ public class ExampleCBHTTPUI : MonoBehaviour {
 	void Start () {
 		_contentAreaRect = new Rect (Screen.width/2 - _contentWidth / 2, Screen.height/2 - _contentHeight / 2, _contentWidth, _contentHeight);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
-	private string ServerAddress = "http://<Your Address>.Azure.";
-	private string PathString = "";
+	private string ServerAddress = "https://<Your Address>.azurewebsites.net/";
+	private string PathString = "api/ping";
 
 	private string ResponseData = "";
 	private string RequestData = "";

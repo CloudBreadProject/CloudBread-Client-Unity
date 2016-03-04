@@ -28,14 +28,6 @@ public class CBUserInfoUI : CBBaseUI {
 
 	}
 
-	private void SelLoginInfo_Success(string id, WWW www){
-		Debug.Log ("[SelLoginInfo_Success]" + www.text);
-	}
-
-	private void SelLoginInfo_Error(string id, WWW www){
-		Debug.Log ("[SelLoginInfo_Error]" + www.text);
-	}
-
 	private CloudBreadAzure cloudbread;
 
 	private string requestJson = "";
@@ -69,7 +61,7 @@ public class CBUserInfoUI : CBBaseUI {
 				GUILayout.TextField (ServerAddress + "api/CBSelLoginInfo");
 			GUILayout.EndHorizontal ();
 
-			GUILayout.BeginHorizontal();
+			GUILayout.BeginVertical();
 				
 				GUILayout.BeginVertical ();
 					GUILayout.Label ("Request Json Data");
@@ -78,9 +70,10 @@ public class CBUserInfoUI : CBBaseUI {
 					GUILayout.Label ("Response Json Data : ");
 					RequestResultJson = GUILayout.TextArea (RequestResultJson);
 				GUILayout.EndVertical ();
+				GUILayout.Label ("");
 				drawTablewithButtonUserInfo(ResultDicData, "memberID");
 				
-		GUILayout.EndHorizontal();
+			GUILayout.EndVertical();
 		GUILayout.EndVertical ();
 		GUILayout.EndScrollView ();
 
