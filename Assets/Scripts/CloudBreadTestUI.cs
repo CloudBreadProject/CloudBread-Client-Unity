@@ -11,7 +11,7 @@ public class CloudBreadTestUI : MonoBehaviour {
 
 	private enum TESTPAGE {main, login, authentication, userInfo, memberGameInfo, itemList, userItem, gameStage, notice, events, coupons, socket};
 
-	private string jsonAreaString = "Json Area";
+//	private string jsonAreaString = "Json Area";
 	private string jsonAreaInitString = "Json Area";
 
 	private GameObject MainContainer;
@@ -44,65 +44,53 @@ public class CloudBreadTestUI : MonoBehaviour {
 			GUILayout.BeginVertical("box");
 			if (GUILayout.Button ("메인 페이지", GUILayout.Height(50))) {
 				print ("Main Page");
-				jsonAreaString = jsonAreaInitString;
 				PresentationView (TESTPAGE.main);
 				
 			}
 			if (GUILayout.Button ("로그인 페이지", GUILayout.Height(50))) {
 				print ("Login Page");
-				jsonAreaString = jsonAreaInitString;
 				PresentationView (TESTPAGE.login);
 			}
 			if (GUILayout.Button ("인증 후 이름 \n 메일 저장", GUILayout.Height(50))) {
 				print ("Authentication Page");
 				PresentationView (TESTPAGE.authentication);
-				jsonAreaString = jsonAreaInitString;
 
 			}
 			if (GUILayout.Button ("회원 정보", GUILayout.Height(50))) {
 				print ("UserInfo Page");
 				PresentationView (TESTPAGE.userInfo);
-				jsonAreaString = jsonAreaInitString;
 			}
 			if (GUILayout.Button ("게임 정보", GUILayout.Height(50))) {
 				print ("GameInfo Page");
 				PresentationView (TESTPAGE.memberGameInfo);
-				jsonAreaString = jsonAreaInitString;
 			}
 			if (GUILayout.Button ("아이템 목록", GUILayout.Height(50))) {
 				print ("ItemList Page");
 				PresentationView (TESTPAGE.itemList);
-				jsonAreaString = jsonAreaInitString;
 			}
 			if (GUILayout.Button ("게이머 소유\n아이템 목록", GUILayout.Height(50))) {
 				print ("UserItem Page");
 				PresentationView (TESTPAGE.userItem);
-				jsonAreaString = jsonAreaInitString;
 			}
 			if (GUILayout.Button ("게임 스테이지", GUILayout.Height(50))) {
 				print ("GameStage Page");
 				PresentationView (TESTPAGE.gameStage);
-				jsonAreaString = jsonAreaInitString;
 			}
 			if (GUILayout.Button ("공지사항", GUILayout.Height(50))) {
 				print ("Notice Page");
 				PresentationView (TESTPAGE.notice);
-				jsonAreaString = jsonAreaInitString;
 			}
 			if (GUILayout.Button ("이벤트", GUILayout.Height(50))) {
 				print ("Events Page");
 				PresentationView (TESTPAGE.events);
-				jsonAreaString = jsonAreaInitString;
 			}
 			if (GUILayout.Button ("쿠폰", GUILayout.Height(50))) {
 				print ("Coupons Page");
 				PresentationView (TESTPAGE.coupons);
-				jsonAreaString = jsonAreaInitString;
 			}
 			if (GUILayout.Button ("Socket 채팅", GUILayout.Height (50))) {
 				print ("Socket Page");
 				PresentationView (TESTPAGE.socket);
-				jsonAreaString = jsonAreaInitString;
 			}
 			GUILayout.EndVertical();
 		GUILayout.EndArea();
@@ -138,14 +126,6 @@ public class CloudBreadTestUI : MonoBehaviour {
 				GUILayout.EndHorizontal ();
 			GUILayout.EndVertical ();
 
-			/////////////////////////
-//		jsonAreaString = GUILayout.TextArea (jsonAreaString, GUILayout.Height (300));
-		
-
-//			GUILayout.BeginVertical ("box");
-//			GUILayout.TextArea ("aaaa", 250);
-//
-//			GUILayout.EndVertical ();
 		GUILayout.EndVertical();
 		GUILayout.EndArea ();
 		GUILayout.EndHorizontal ();
@@ -161,7 +141,6 @@ public class CloudBreadTestUI : MonoBehaviour {
 		} else {
 			Debug.Log (www.text);
 			print (www.text);
-			jsonAreaString = www.text;
 			requestHelper.setTokenJson (www.text);
 		}
 	}
