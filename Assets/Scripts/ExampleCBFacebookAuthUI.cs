@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MmberExampleUI : MonoBehaviour {
+public class ExampleCBFacebookAuthUI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {

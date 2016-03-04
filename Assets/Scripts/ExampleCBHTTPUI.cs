@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using AssemblyCSharp;
 
-public class CampExampleUI : MonoBehaviour {
+public class ExampleCBHTTPUI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -87,29 +87,29 @@ public class CampExampleUI : MonoBehaviour {
 	public void OnGUI(){
 		GUILayout.BeginArea(_contentAreaRect);
 			GUILayout.BeginVertical ();
-			GUILayout.BeginHorizontal ("box");
-			GUILayout.Label("Server Address : ", GUILayout.Width(100));
-			ServerAddress = GUILayout.TextField(ServerAddress, GUILayout.Width(_contentWidth - 125));
-			GUILayout.EndHorizontal ();
-			GUILayout.BeginHorizontal ("box");
-			GUILayout.Label("Path : ", GUILayout.Width(100));
-			PathString = GUILayout.TextField(PathString, GUILayout.Width(_contentWidth-125));
-			GUILayout.EndHorizontal ();
-			GUILayout.BeginHorizontal ();
-			if (GUILayout.Button ("Send", GUILayout.Width (80))) {
-				HTTPRequestSend ();
-			}
-			if (GUILayout.Button ("Auth Send ", GUILayout.Width (80))) {
-				HTTPRequestAuthSend ();
-			}
-			GUILayout.EndHorizontal ();
-			GUILayout.Label ("");
-			GUILayout.Label ("Request Data : ");
-			RequestData = GUILayout.TextArea (RequestData, GUILayout.Width(_contentWidth), GUILayout.Height(50));
+				GUILayout.BeginHorizontal ("box");
+					GUILayout.Label("Server Address : ", GUILayout.Width(100));
+					ServerAddress = GUILayout.TextField(ServerAddress, GUILayout.Width(_contentWidth - 125));
+				GUILayout.EndHorizontal ();
+				GUILayout.BeginHorizontal ("box");
+					GUILayout.Label("Path : ", GUILayout.Width(100));
+					PathString = GUILayout.TextField(PathString, GUILayout.Width(_contentWidth-125));
+				GUILayout.EndHorizontal ();
+				GUILayout.BeginHorizontal ();
+					if (GUILayout.Button ("Send", GUILayout.Width (80))) {
+						HTTPRequestSend ();
+					}
+					if (GUILayout.Button ("Auth Send ", GUILayout.Width (80))) {
+						HTTPRequestAuthSend ();
+					}
+				GUILayout.EndHorizontal ();
+				GUILayout.Label ("");
+				GUILayout.Label ("Request Data : ");
+				RequestData = GUILayout.TextArea (RequestData, GUILayout.Width(_contentWidth), GUILayout.Height(50));
 
-			GUILayout.Label ("");
-			GUILayout.Label ("Response Data : ");
-			ResponseData = GUILayout.TextArea (ResponseData, GUILayout.Width(_contentWidth), GUILayout.Height(300));
+				GUILayout.Label ("");
+				GUILayout.Label ("Response Data : ");
+				ResponseData = GUILayout.TextArea (ResponseData, GUILayout.Width(_contentWidth), GUILayout.Height(300));
 			GUILayout.EndVertical ();
 		GUILayout.EndArea ();
 	}

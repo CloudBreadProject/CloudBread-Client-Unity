@@ -26,15 +26,7 @@ public class CBUserInfoUI : CBBaseUI {
 		var jsonStr = JsonParser.WritePretty (header);
 		requestJson = jsonStr;
 
-//		CBSelLoginInfoController api = new CBSelLoginInfoController(ServerAddress, SelLoginInfo_Success, SelLoginInfo_Error);
-
 	}
-
-//	public void CallBack(string jsonString, Dictionary<string, object>[] jsonRequestData){
-//		print ("call back methods");
-//		ResultDicData = jsonRequestData;
-//		RequestResultJson = jsonString;
-//	}
 
 	private void SelLoginInfo_Success(string id, WWW www){
 		Debug.Log ("[SelLoginInfo_Success]" + www.text);
@@ -46,16 +38,7 @@ public class CBUserInfoUI : CBBaseUI {
 
 	private CloudBreadAzure cloudbread;
 
-//	public void CallBack(string jsonString, Dictionary<string, object>[] jsonRequestData){
-//		print ("call back methods");
-//		ResultDicData = jsonRequestData;
-//		RequestResultJson = jsonString;
-////		print ("call back methods");
-//	}
-
-
 	private string requestJson = "";
-	private string responseJson = "";
 
 	Vector2 scrollPosition2;
 	private bool modifyClickedBool = false;
@@ -118,7 +101,6 @@ public class CBUserInfoUI : CBBaseUI {
 					GUILayout.Label ("Response Json Data : ");
 					responseJson_modify = GUILayout.TextArea (responseJson_modify);
 				GUILayout.EndVertical ();
-//				drawTablewithButtonUserInfo(ResultDicData, "memberID");
 
 			GUILayout.EndHorizontal();
 			GUILayout.EndVertical ();
