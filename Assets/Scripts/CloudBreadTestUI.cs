@@ -8,7 +8,7 @@ public class CloudBreadTestUI : MonoBehaviour {
 	private string ServerAddress = "https://dw-cloudbread2.azurewebsites.net/";
 //	private string ServerAddress = "https://yscloudbreadmobile.azurewebsites.net/";
 
-	private enum TESTPAGE {main, login, authentication, userInfo, memberGameInfo, itemList, userItem, gameStage, notice, events, coupons, socket};
+	private enum TESTPAGE {main, login, authentication, userInfo, memberGameInfo, itemList, userItem, gameStage, notice, events, coupons, socket, encypt};
 
 	private GameObject MainContainer;
 	private CBBaseUI _mainView;
@@ -25,6 +25,10 @@ public class CloudBreadTestUI : MonoBehaviour {
 		GUILayout.BeginHorizontal ();
 		GUILayout.BeginArea (new Rect (new Vector2 (Screen.width - 120, 0), new Vector2 (120, Screen.height)));
 		GUILayout.BeginVertical ("box");
+		if (GUILayout.Button ("Encypt", GUILayout.Height (50))) {
+			print ("Main Page");
+			PresentationView (TESTPAGE.encypt);
+		}
 		if (GUILayout.Button ("메인 페이지", GUILayout.Height (50))) {
 			print ("Main Page");
 			PresentationView (TESTPAGE.main);
@@ -159,6 +163,10 @@ public class CloudBreadTestUI : MonoBehaviour {
 			break;
 		case TESTPAGE.socket:
 			ui = MainContainer.AddComponent (typeof(CBSocketGUI)) as CBBaseUI;
+			ui.enabled = true;
+			break;
+		case TESTPAGE.encypt:
+			ui = MainContainer.AddComponent (typeof(CBEncryptTextGUI)) as CBBaseUI;
 			ui.enabled = true;
 			break;
 		default:
