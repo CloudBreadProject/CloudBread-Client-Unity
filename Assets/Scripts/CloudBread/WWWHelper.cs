@@ -46,40 +46,11 @@ public class WWWHelper : MonoBehaviour {
 
 	// POST with Dictionary JsonData
 	public void POST(int id, string url, Dictionary<string, object> JsonData){
-		WWWForm form = new WWWForm ();
-
-//		if (HeaderDic == null) {
-//			HeaderDic = getHeaders ();
-//		}
-		HeaderDic = AzureMobileAppRequestHelper.getHeader();
-		foreach (KeyValuePair<string, string> post_arg in HeaderDic) {
-			form.AddField(post_arg.Key, post_arg.Value);
-		}
-
-		string jsonString = JsonParser.Write (JsonData);
-
-		// utf-8 인코딩
-		byte [] bytesForEncoding = Encoding.UTF8.GetBytes ( jsonString ) ;
-		string encodedString = Convert.ToBase64String (bytesForEncoding );
-
-		// utf-8 디코딩
-		byte[] decodedBytes = Convert.FromBase64String (encodedString );
-		string decodedString = Encoding.UTF8.GetString (decodedBytes );
-
-		byte[] jsonByte = Encoding.UTF8.GetBytes(decodedString);
-
-		WWW www = new WWW(url, jsonByte, HeaderDic);
-		StartCoroutine(WaitForRequest("" + id, www));
-
+		POST (id, url, JsonParser.Write (JsonData));
 	}
 
 	// POST with string JsonData
 	public void POST(string id, string url, string JsonData){
-//		WWWForm form = new WWWForm ();
-
-//		if (HeaderDic == null) {
-//			HeaderDic = getHeaders ();
-//		}
 		HeaderDic = AzureMobileAppRequestHelper.getHeader();
 
 		WWW www = new WWW(url, Encoding.UTF8.GetBytes(JsonData), HeaderDic);
