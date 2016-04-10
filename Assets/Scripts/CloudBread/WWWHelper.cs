@@ -29,8 +29,6 @@ public class WWWHelper : MonoBehaviour {
 		}
 	}
 
-	public Dictionary<string, string> HeaderDic;
-
 	public void get(string url){
 		WWW www = new WWW (url);
 		StartCoroutine (WaitForRequest ("1", www));
@@ -46,12 +44,13 @@ public class WWWHelper : MonoBehaviour {
 
 	// POST with Dictionary JsonData
 	public void POST(int id, string url, Dictionary<string, object> JsonData){
-		POST (id, url, JsonParser.Write (JsonData));
+		string jsonString = JsonParser.Write (JsonData);
+		POST (id, url, jsonString);
 	}
 
 	// POST with string JsonData
 	public void POST(string id, string url, string JsonData){
-		HeaderDic = AzureMobileAppRequestHelper.getHeader();
+		var HeaderDic = AzureMobileAppRequestHelper.getHeader();
 
 		WWW www = new WWW(url, Encoding.UTF8.GetBytes(JsonData), HeaderDic);
 		StartCoroutine(WaitForRequest(id, www));
