@@ -18,6 +18,7 @@ namespace AssemblyCSharp
 			byte[] decodedBytes = Convert.FromBase64String (encodedString );
 			string decodedString = Encoding.UTF8.GetString (decodedBytes );
 
+			return decodedString;
 		}
 	}
 }
