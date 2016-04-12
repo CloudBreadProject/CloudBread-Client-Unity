@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Text;
 using AssemblyCSharp;
 
 public class TestScript : MonoBehaviour {
@@ -16,6 +18,54 @@ public class TestScript : MonoBehaviour {
 		string str = JsonFx.Json.JsonWriter.Serialize(notice);
 		print ("======================================");
 		print (str);
+
+//		var a = JsonFx.Json.JsonReader.Deserialize<Dictionary<string,string>>(
+
+//		string jsontest2 = "[{\"memberID\":\"test0\",\"level\":\"1\",\"exps\":\"0\",\"points\":\"0\",\"userSTAT1\":\"\"{\\\"totalFloor\\\":1,\\\"maxFloor\\\":1,\\\"maxHp\\\":3,\\\"atk\\\":1,\\\"evade\\\":50,\\\"hit\\\":0,\\\"totalGold\\\":0,\\\"haveGold\\\":0,\\\"totalJewel\\\":0,\\\"haveJewel\\\":0,\\\"inGameGainHeart\\\":0,\\\"totalMonKill\\\":0}\"\",\"userSTAT2\":\"\",\"userSTAT3\":\"\",\"userSTAT4\":\"\",\"userSTAT5\":\"\",\"userSTAT6\":\"\",\"userSTAT7\":\"\",\"userSTAT8\":\"\",\"userSTAT9\":\"\",\"userSTAT10\":\"\",\"sCol1\":\"\",\"sCol2\":\"\",\"sCol3\":\"\",\"sCol4\":\"\",\"sCol5\":\"\",\"sCol6\":\"\",\"sCol7\":\"\",\"sCol8\":\"\",\"sCol9\":\"\",\"sCol10\":\"\"}]";
+		Notice oneNotice = new Notice();
+		oneNotice.noticeCategory1 = jsonTest;
+		string strjson = JsonFx.Json.JsonWriter.Serialize (oneNotice);
+		print (strjson);
+		var requestDic= JsonFx.Json.JsonReader.Deserialize<Dictionary<string, string>>(strjson);
+		print ((string)requestDic["noticeCategory1"]);
+
+		StartCoroutine (SelGameInfo ());
+
+		testJson ();
+	}
+
+	IEnumerator SelGameInfo(){
+		var serverAdd = "https://decemberocho-cb-fe-ma-dev.azurewebsites.net/api/";
+		string url = serverAdd + "CBComSelMemberGameInfoes";
+
+		Dictionary<string,string> body = new Dictionary<string, string> ();
+		body.Add ("memberID", "betatest");
+
+		string json = JsonFx.Json.JsonWriter.Serialize (body);
+		byte[] jsonbyt = Encoding.UTF8.GetBytes (json);
+
+		WWW www = new WWW (url, jsonbyt, AzureMobileAppRequestHelper.getHeader ());
+
+		print ("~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+		yield return www;
+
+		print (www.text);
+//		genString = "";
+//		var replacedString = www.text.Replace("\\\"", "");
+//		print (replacedString);
+		var requestDic= JsonFx.Json.JsonReader.Deserialize<Dictionary<string,string>[]>(www.text);
+
+		Dictionary<string,string> tempDic = requestDic [0];
+		print (tempDic ["userSTAT1"]);
+//		print(requestDic["userSTAT1"]);
+
+//		var rereplaceString = requestDic ["userSTAT1"].Replace ("&", "\"");
+//		print (rereplaceString);
+
+	}
+
+	void testJson(){
 	}
 	
 	// Update is called once per frame
@@ -67,25 +117,3 @@ public class Notice {
 	[JsonFx.Json.JsonIgnore]
 	public string a;
 }
-//{
-//	"noticeID": "NoticeID1",
-//	"noticeCategory1": "NoticeCategory1",
-//	"noticeCategory2": "NoticeCategory2",
-//	"noticeCategory3": "NoticeCategory3",
-//	"targetGroup": "TargetGroup",
-//	"targetOS": "TargetOS",
-//	"targetDevice": "TargetDevice",
-//	"noticeImageLink": "NoticeImageLink",
-//	"title": "title1",
-//	"content": "content",
-//	"sCol1": "sCol1",
-//	"sCol2": "sCol2",
-//	"sCol3": "sCol3",
-//	"sCol4": "sCol4",
-//	"sCol5": "sCol5",
-//	"sCol6": "sCol6",
-//	"sCol7": "sCol7",
-//	"sCol8": "sCol8",
-//	"sCol9": "sCol9",
-//	"sCol10": "sCol10"
-//},
