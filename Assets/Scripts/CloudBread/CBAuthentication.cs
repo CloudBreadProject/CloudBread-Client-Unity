@@ -1,7 +1,9 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
 using System.Security.Cryptography;
 using System.Text;
 using System.IO;
+using System.Collections.Generic;
 
 namespace AssemblyCSharp
 {
@@ -11,7 +13,16 @@ namespace AssemblyCSharp
 		{
 		}
 
-		public string token;
+		public static void setTokenJson(string json, out string token){
+			Debug.Log ("[AzureMobileAppRequest] " + json);
+			var resultDic = (Dictionary<string, object>) JsonParser.Read2Object(json);
+
+			token = (string) resultDic ["token"];
+			Debug.Log ("[token] " + token);
+
+			var crypt = CBAuthentication.AES_decrypt (token, "1234567890123456", "1234567890123456");
+			Debug.Log ("[token decrypt] " + crypt);
+		}
 
 
 		// 대칭키 AES256
