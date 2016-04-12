@@ -10,7 +10,7 @@ namespace AssemblyCSharp
 		private static string _api_version = "2.0.0";
 
 		// X-ZUMO-AUTH
-		public static string AuthToken;
+		public static string AuthToken = null;
 
 		public static Dictionary<string, string> getHeader(){
 			Dictionary<string,string> header = new Dictionary<string,string> ();

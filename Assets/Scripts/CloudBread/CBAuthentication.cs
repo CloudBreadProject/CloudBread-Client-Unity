@@ -9,21 +9,18 @@ namespace AssemblyCSharp
 {
 	public class CBAuthentication
 	{
-		public CBAuthentication ()
-		{
-		}
-
-		public static void setTokenJson(string json, out string token){
+		public static string getTokenData(string json, string key, string IV){
 			Debug.Log ("[AzureMobileAppRequest] " + json);
 			var resultDic = (Dictionary<string, object>) JsonParser.Read2Object(json);
 
-			token = (string) resultDic ["token"];
+			string token = (string) resultDic ["token"];
 			Debug.Log ("[token] " + token);
 
 			var crypt = CBAuthentication.AES_decrypt (token, "1234567890123456", "1234567890123456");
 			Debug.Log ("[token decrypt] " + crypt);
-		}
 
+			return token;
+		}
 
 		// 대칭키 AES256
 		public static string AES_encrypt(string Input, string key, string IV)
