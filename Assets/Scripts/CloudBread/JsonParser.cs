@@ -62,15 +62,6 @@ namespace AssemblyCSharp
 		public static T Read<T>(string json){
 			return JsonReader.Deserialize<T> (json);
 		}
-
-//
-//		// utf-8 인코딩
-//		byte [] bytesForEncoding = Encoding.UTF8.GetBytes ( 인코딩 할 유니코드 string 변수 ) ;
-//		string encodedString = Convert.ToBase64String (bytesForEncoding );
-//
-//		// utf-8 디코딩
-//		byte[] decodedBytes = Convert.FromBase64String (encodedString );
-//		string decodedString = Encoding.UTF8.GetString (decodedBytes );
 	}
 }
 

@@ -40,9 +40,8 @@ namespace AssemblyCSharp
 
 		}
 
-		public Dictionary<string,object> CBSelLoginInfoHeaderDIc;
 		// POST api/CBSelLoginInfo
-		public void CBSelLoginInfo(Action<string, Dictionary<string,object>[]> callback){
+		public void CBSelLoginInfo(Action<string, Dictionary<string,object>[]> callback, out Dictionary<string, object> CBSelLoginInfoHeaderDIc ){
 			string ServerEndPoint = ServerAddress + "api/CBSelLoginInfo";
 
 			WWWHelper helper = WWWHelper.Instance;

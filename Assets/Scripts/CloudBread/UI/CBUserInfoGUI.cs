@@ -19,10 +19,10 @@ public class CBUserInfoUI : CBBaseUI {
 
 	// Use this for initialization
 	void Start () {
+		Dictionary<string, object> header;
 		cloudbread = new CloudBreadAzure (ServerAddress);
-		cloudbread.CBSelLoginInfo (CallBack);
+		cloudbread.CBSelLoginInfo (CallBack, out header);
 
-		var header = cloudbread.CBSelLoginInfoHeaderDIc;
 		var jsonStr = JsonParser.WritePretty (header);
 		requestJson = jsonStr;
 
