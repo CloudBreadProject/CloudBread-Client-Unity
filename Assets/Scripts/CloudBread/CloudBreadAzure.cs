@@ -10,12 +10,9 @@ namespace AssemblyCSharp
 		public CloudBreadAzure (string ServerAddress)
 		{
 			this.ServerAddress = ServerAddress;
-//			requestHelper = new AzureMobileAppRequestHelper (ServerAddress);
 		}
 
 		public string ServerAddress = "";
-
-//		private AzureMobileAppRequestHelper requestHelper;
 
 		public void getLoginInfoData(){
 //			CBSelLoginInfoController controller = new CBSelLoginInfoController(serverAddress,
