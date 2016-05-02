@@ -2,13 +2,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using AssemblyCSharp;
 
 public class AzureAuthentication : MonoBehaviour {
 	
 	public class AuthenticationToken
 	{
 	}
+
 	public class FacebookGoogleAuthenticationToken : AuthenticationToken
 	{
 		public string access_token;
@@ -45,7 +45,7 @@ public class AzureAuthentication : MonoBehaviour {
 
 		AuthenticationToken authToken = CreateToken(provider, token);
 
-		var json = JsonParser.Write(authToken);
+		string json = JsonUtility.ToJson(authToken);
 		print (json);
 
 		Callback_Success = callback_success;
@@ -68,7 +68,7 @@ public class AzureAuthentication : MonoBehaviour {
 //			Debug.Log (www.text);
 			Callback_Success(id, www);
 		}
-	}
+	} 
 
 	private static AuthenticationToken CreateToken(AuthenticationProvider provider, string token)
 	{
