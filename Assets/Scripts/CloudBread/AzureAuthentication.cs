@@ -13,6 +13,14 @@ public class AzureAuthentication : MonoBehaviour {
 	{
 		public string access_token;
 	}
+
+	public class GoogleAuthenticationToken : AuthenticationToken
+	{
+		public string access_token;
+		public string id_token;
+		public string authorization_code;
+	}
+
 	public class MicrosoftAuthenticationToken : AuthenticationToken
 	{
 		public string authenticationToken;
@@ -46,6 +54,21 @@ public class AzureAuthentication : MonoBehaviour {
 		AuthenticationToken authToken = CreateToken(provider, token);
 
 		string json = JsonUtility.ToJson(authToken);
+		print (json);
+
+		Callback_Success = callback_success;
+		Callback_Error = callback_error;
+
+		WWWHelper helper = WWWHelper.Instance;
+		helper.OnHttpRequest += OnHttpRequest;
+
+		helper.POST ("Login", ServerAddress + path, json);
+	}
+
+	public void Login(string ServerAddress, AuthenticationProvider provider, AuthenticationToken token, Action<string, WWW> callback_success, Action<string, WWW> callback_error){
+		var path = ".auth/login/" + provider.ToString().ToLower();
+
+		string json = JsonUtility.ToJson(token);
 		print (json);
 
 		Callback_Success = callback_success;
