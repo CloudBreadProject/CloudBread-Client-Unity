@@ -4,10 +4,7 @@ using AssemblyCSharp;
 using JsonFx;
 
 public class CloudBreadTestUI : MonoBehaviour {
-	
-//	private string ServerAddress = "https://dw-cloudbread2.azurewebsites.net/";
-//	private string ServerAddress = "https://yscloudbreadmobile.azurewebsites.net/";
-	private string ServerAddress = "https://cb2-demo.azurewebsites.net/";
+	private string ServerAddress = "https://cb2-auth-demo.azurewebsites.net/";
 
 	private enum TESTPAGE {main, login, authentication, userInfo, memberGameInfo, itemList, userItem, gameStage, notice, events, coupons, socket, encypt};
 
