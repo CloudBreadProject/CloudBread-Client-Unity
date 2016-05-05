@@ -1,36 +1,13 @@
 ﻿using System;
+using System.Text;
+using System.Collections;
 using UnityEngine;
-//using Unity
+using AssemblyCSharp;
 
 namespace CloudBread.Authentication
 {
 	public class UserAuth : MonoBehaviour
 	{
-		public UserAuth ()
-		{
-		}
-
-		public class AuthenticationToken
-		{
-		}
-
-		public class FacebookGoogleAuthenticationToken : AuthenticationToken
-		{
-			public string access_token;
-		}
-
-		public class GoogleAuthenticationToken : AuthenticationToken
-		{
-			public string access_token;
-			public string id_token;
-			public string authorization_code;
-		}
-
-		public class MicrosoftAuthenticationToken : AuthenticationToken
-		{
-			public string authenticationToken;
-		}
-
 		public enum AuthenticationProvider
 		{
 			// Summary:
@@ -64,10 +41,24 @@ namespace CloudBread.Authentication
 			Callback_Success = callback_success;
 			Callback_Error = callback_error;
 
-			WWWHelper helper = WWWHelper.Instance;
-			helper.OnHttpRequest += OnHttpRequest;
+			var HeaderDic = AzureMobileAppRequestHelper.getHeader();
 
-			helper.POST ("Login", ServerAddress + path, json);
+			WWW www = new WWW(ServerAddress + path, Encoding.UTF8.GetBytes(json), HeaderDic);
+			StartCoroutine(WaitForRequest("aa", www));
+		}
+
+		private IEnumerator  WaitForRequest(string id, WWW www) {
+
+			yield return www;
+
+
+//			bool hasCompleteListener = (OnHttpRequest != null);
+
+//			if (hasCompleteListener) {
+				OnHttpRequest(id, www);
+//			}
+
+			www.Dispose();
 		}
 
 		public void Login(string ServerAddress, AuthenticationProvider provider, AuthenticationToken token, Action<string, WWW> callback_success, Action<string, WWW> callback_error){
