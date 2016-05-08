@@ -47,16 +47,11 @@ namespace CloudBread.Authentication
 			StartCoroutine(WaitForRequest("aa", www));
 		}
 
-		private IEnumerator  WaitForRequest(string id, WWW www) {
+		private IEnumerator WaitForRequest(string id, WWW www) {
 
 			yield return www;
 
-
-//			bool hasCompleteListener = (OnHttpRequest != null);
-
-//			if (hasCompleteListener) {
-				OnHttpRequest(id, www);
-//			}
+			OnHttpRequest(id, www);
 
 			www.Dispose();
 		}
@@ -110,7 +105,5 @@ namespace CloudBread.Authentication
 			return authToken;
 		}
 	}
-
-
 }
 
