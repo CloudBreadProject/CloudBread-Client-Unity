@@ -5,21 +5,9 @@ using System.Collections;
 
 public class CBRankingGUI : MonoBehaviour {
 
-//	float virtualWidth = 1920.0f;
-//	float virtualHeight = 1080.0f;
-
-
-	public float virtualWidth = 800.0f;
-	public float virtualHeight = 480.0f;
-	Matrix4x4 matrix;
-
-	public float RealWidth = 0.0f;
-	public float RealHeight = 0.0f;
-	public float RealDip = 0.0f;
-
 	public RankingRow[] RankingList;
 
-	public Rect rect;
+//	public Rect rect;
 
 	public GUIText myRankGUIText;
 	public GameObject myNameGUIText;
@@ -49,17 +37,48 @@ public class CBRankingGUI : MonoBehaviour {
 
 	}
 		
+	private const int RANK_NUM = 10;
+	private GameObject [] RankingBoardRow_Gameobject = new GameObject [RANK_NUM];
 
 	// Use this for initialization
 	void Start () {
 		var a = GameObject.Find ("MyNameText").GetComponent<Text>();
 		a.text = "Hong";
+
+		RankingBoardRow_Gameobject [0] = GameObject.Find ("RankingBoardRow");
+		RankingBoardRow_Gameobject [0].transform.FindChild ("RnakingNumText").GetComponent<Text> ().text = "1";
+
+		GameObject parentObject = GameObject.Find("PanelRankingBoard") as GameObject;
+
+		for (int i = 1; i < RANK_NUM; i++) {
+			RankingBoardRow_Gameobject [i] = Instantiate (RankingBoardRow_Gameobject [0]) as GameObject;
+			RankingBoardRow_Gameobject[i].transform.SetParent(parentObject.transform, false);
+			RankingBoardRow_Gameobject [i].transform.FindChild ("RnakingNumText").GetComponent<Text> ().text = (i + 1).ToString ();
+		}
+
+		RankingBoardRow_Gameobject [7].transform.FindChild ("NameText").GetComponent<Text> ().text = "HiHIhI";
+
+		gridLayoutGroup = parentObject.GetComponent<GridLayoutGroup> ();
+		rect = parentObject.GetComponent<RectTransform> ();
+
+		gridLayoutGroup.cellSize = new Vector2 (rect.rect.width, 27);
+		cellCount = GetComponentsInChildren<RectTransform> ().Length;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
-		
 
+	GridLayoutGroup gridLayoutGroup;
+	RectTransform rect;
+	public float height;
+	public int cellCount = 2;
+		
+	void OnRectTransformDimensionsChange ()
+	{
+		if (gridLayoutGroup != null && rect != null)
+		if ((rect.rect.height + (gridLayoutGroup.padding.horizontal * 2)) * cellCount < rect.rect.width)
+			gridLayoutGroup.cellSize = new Vector2 (rect.rect.height, rect.rect.height);
+	}
 }
