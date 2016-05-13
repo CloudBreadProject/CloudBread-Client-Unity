@@ -19,30 +19,11 @@ public class CBChattingScripts : MonoBehaviour {
 	void Start () {
 
 		for (int i = 0; i < 100; i++) {
-//			var a = Instantiate (Chatting_Chat) as GameObject;
-//
-//			a.transform.SetParent (Chatting_Panel.transform, false);
 			addChattingScript (new ChatData {
 				userName = "hong",
 				text = "Hello1"
 			});
 		}
-
-//		Chatting_Panel.transform.GetComponent<RectTransform> ().rect.height = 30 * 100;
-
-//		Text t = ContnetChatting.GetComponent<Text> ();
-
-//		GameObject childObject = Instantiate(GameObject.Find("Chat_Panel")) as GameObject;
-//
-//		GameObject gb = GameObject.Find("Content");
-////		var g = gb.AddComponent (typeof(CBEventsGUI));
-//
-//		gbb.name = "aaaa";
-//		gbb.transform.parent = gb.transform;
-//		text = gbb.AddComponent<Text> ();
-//
-//		childObject.transform.parent = gb.transform;
-
 
 		GameObject childObject = Instantiate (GameObject.Find ("Chat_Panel")) as GameObject;
 		GameObject parentObject = GameObject.Find ("Content") as GameObject;
@@ -94,6 +75,18 @@ public class CBChattingScripts : MonoBehaviour {
 //		print (a);
 
 		Chatting_Panel.GetComponent<RectTransform> ().sizeDelta = new Vector2 ( 1, chatContentHeight);
-//		Chatting_Panel
+		GameObject.Find ("Scroll View").GetComponent<ScrollRect> ().ScrollToBottom ();
+	}
+}
+
+public static class ScrollRectExtensions
+{
+	public static void ScrollToTop(this ScrollRect scrollRect)
+	{
+		scrollRect.normalizedPosition = new Vector2(0, 1);
+	}
+	public static void ScrollToBottom(this ScrollRect scrollRect)
+	{
+		scrollRect.normalizedPosition = new Vector2(0, 0);
 	}
 }
