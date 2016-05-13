@@ -5,12 +5,6 @@ using System.Collections.Generic;
 
 public class CBChattingScripts : MonoBehaviour {
 
-//	public GameObject ContnetChatting;
-
-//	private GameObject gbb = new GameObject();
-
-//	public Text text;
-
 	public struct ChatData
 	{
 		public string userName;
@@ -18,9 +12,8 @@ public class CBChattingScripts : MonoBehaviour {
 
 	};
 
-
 	public GameObject Chatting_Panel;
-	public GameObject Chatting_Chat;
+	public GameObject Chatting_Cell;
 
 	// Use this for initialization
 	void Start () {
@@ -67,14 +60,32 @@ public class CBChattingScripts : MonoBehaviour {
 	
 	}
 		
+
+	public void sendButtonClicked(GameObject TextGObj){
+		Text inputText = TextGObj.GetComponent<Text> () as Text;
+
+		if (inputText.text != "") {
+			addChattingScript (new ChatData {
+				userName = "aaa",
+				text = inputText.text
+			});
+
+//			inputText.text.Remove ();
+		}
+	}
+
 	public void addChattingScript(ChatData data){
-		var chatRow = Instantiate (Chatting_Chat) as GameObject;
+		var chatRow = Instantiate (Chatting_Cell) as GameObject;
 
 		var nameGObj = chatRow.transform.FindChild ("Name_Text") ;
-		var contentGObj = chatRow.transform.FindChild ("Background_Img").transform.FindChild("Content_Text");
+		var backgroundGObj = chatRow.transform.FindChild ("Background_Img");
+		var contentGObj = backgroundGObj.transform.FindChild("Content_Text");
 
 		nameGObj.GetComponent<Text> ().text = data.userName;
 		contentGObj.GetComponent<Text> ().text = data.text;
+
+//		nameGObj.transform.GetComponent<
+//		backgroundGObj.GetComponent<RectTransform> ().sizeDelta = new Vector2 (1, 1);
 
 		chatRow.transform.SetParent (Chatting_Panel.transform, false);
 
